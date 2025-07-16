@@ -20,7 +20,10 @@
 			"database_name": "temp-mail-emails",
 			"database_id": "1fa9da77-36f3-41ab-a9dd-3550c4399060" // You'll replace this after creating the DB
 		}
-	]
+	],
+	"triggers": {
+		"crons": ["0 * * * *"]
+	}
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

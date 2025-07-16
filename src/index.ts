@@ -73,4 +73,19 @@ export default {
 		console.log(`To: ${message.to}`);
 		console.log('Subject:', email.subject);
 	},
+	async scheduled(event: ScheduledEvent, env: CloudflareBindings, ctx: ExecutionContext) {
+		console.log("Running scheduled email cleanup...");
+		const { DB } = env;
+
+		// Calculate the timestamp for 3 days ago
+		const threeDaysAgo = Date.now() - (3 * 24 * 60 * 60 * 1000);
+
+		const { success, error } = await DB.prepare("DELETE FROM emails WHERE received_at < ?").bind(threeDaysAgo).run();
+
+		if (success) {
+			console.log("Email cleanup completed successfully.");
+		} else {
+			console.error("Email cleanup failed:", error);
+		}
+	},
 };
