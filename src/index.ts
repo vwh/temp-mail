@@ -30,7 +30,7 @@ app.get("/emails/:emailAddress", async (c) => {
 
 app.get("/inbox/:emailId", async (c) => {
 	const { DB } = c.env;
-	const emailId = c.req.param('id');
+	const emailId = c.req.param('emailId');
 
 	// Fetch email details
 	const emailResult = await DB.prepare("SELECT * FROM emails WHERE id = ?").bind(emailId).first();
@@ -63,8 +63,8 @@ export default {
 			message.to,
 			email.subject,
 			receivedAt,
-			email.html,
-			email.text
+			email.html || null,
+			email.text || null
 		)
 		.run();
 
