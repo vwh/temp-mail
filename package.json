@@ -4,10 +4,13 @@
 	"scripts": {
 		"dev": "wrangler dev",
 		"deploy": "wrangler deploy --minify",
+		"tail": "npx wrangler tail",
 		"cf-typegen": "wrangler types --env-interface CloudflareBindings"
 	},
 	"dependencies": {
-		"hono": "^4.8.5"
+		"@paralleldrive/cuid2": "^2.2.2",
+		"hono": "^4.8.5",
+		"postal-mime": "^2.4.4"
 	},
 	"devDependencies": {
 		"wrangler": "^4.24.4"
