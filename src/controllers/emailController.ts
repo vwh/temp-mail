@@ -1,5 +1,6 @@
 import type { Handler } from "hono";
 import * as db from "@/db";
+import { DOMAINS } from "@/domains";
 import type { Email, EmailSummary } from "@/schemas/emailSchema";
 
 type Env = {
@@ -60,4 +61,10 @@ export const deleteEmailById: Handler<Env> = async (c) => {
 	return c.json({
 		message: `Email with ID ${emailId} deleted successfully.`,
 	});
+};
+
+export const getSupportedDomains: Handler<Env> = async (c) => {
+	const results = DOMAINS;
+
+	return c.json(results);
 };

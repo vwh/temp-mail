@@ -5,6 +5,7 @@ import {
 	deleteEmailsByAddress,
 	getEmailById,
 	getEmails,
+	getSupportedDomains,
 } from "@/controllers/emailController";
 import {
 	emailAddressParamSchema,
@@ -30,5 +31,7 @@ emailRoutes.delete(
 emailRoutes.get("/inbox/:emailId", zValidator("param", emailIdParamSchema), getEmailById);
 
 emailRoutes.delete("/inbox/:emailId", zValidator("param", emailIdParamSchema), deleteEmailById);
+
+emailRoutes.get("/domains", getSupportedDomains);
 
 export default emailRoutes;
