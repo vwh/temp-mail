@@ -1,7 +1,6 @@
 import * as db from '../db';
 
 export async function handleScheduled(event: ScheduledEvent, env: CloudflareBindings, ctx: ExecutionContext) {
-	console.log("Running scheduled email cleanup...");
 	const { DB } = env;
 
 	const threeDaysAgo = Date.now() - (3 * 24 * 60 * 60 * 1000);

@@ -8,7 +8,6 @@ export async function handleEmail(message: ForwardableEmailMessage, env: Cloudfl
 	const emailId = createId();
 	const receivedAt = Date.now();
 
-	// Insert email data into D1
 	await db.insertEmail(env.DB, {
 		id: emailId,
 		from: message.from,
@@ -18,9 +17,4 @@ export async function handleEmail(message: ForwardableEmailMessage, env: Cloudfl
 		html: email.html || null,
 		text: email.text || null
 	});
-
-	console.log('Email received and saved to D1');
-	console.log(`From: ${message.from}`);
-	console.log(`To: ${message.to}`);
-	console.log('Subject:', email.subject);
 }
