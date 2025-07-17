@@ -1,21 +1,22 @@
 import { D1Database } from "@cloudflare/workers-types";
+import { Email } from "@/schemas/emailSchema";
 
 /**
  * Insert an email into the database
  */
-export async function insertEmail(db: D1Database, emailData: { id: string, from: string, to: string, subject: string | null, receivedAt: number, html: string | null, text: string | null }) {
+export async function insertEmail(db: D1Database, emailData: Email) {
     await db.prepare(
         `INSERT INTO emails (id, from_address, to_address, subject, received_at, html_content, text_content)
          VALUES (?, ?, ?, ?, ?, ?, ?)`
     )
     .bind(
         emailData.id,
-        emailData.from,
-        emailData.to,
+        emailData.from_address,
+        emailData.to_address,
         emailData.subject,
-        emailData.receivedAt,
-        emailData.html,
-        emailData.text
+        emailData.received_at,
+        emailData.html_content,
+        emailData.text_content
     )
     .run();
 }

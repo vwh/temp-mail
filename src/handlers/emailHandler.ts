@@ -4,6 +4,7 @@ import PostalMime from 'postal-mime';
 import { createId } from '@paralleldrive/cuid2';
 
 import { htmlToText, textToHtmlTemplate } from '@/utils/emailContent';
+import { emailSchema, Email } from '@/schemas/emailSchema';
 
 /**
  * Cloudflare email router handler
@@ -24,14 +25,19 @@ export async function handleEmail(message: ForwardableEmailMessage, env: Cloudfl
 		textContent = htmlToText(htmlContent);
 	}
 
-	// Insert email data into D1
-	await db.insertEmail(env.DB, {
+	const emailData: Email = {
 		id: createId(),
-		from: message.from,
-		to: message.to,
+		from_address: message.from,
+		to_address: message.to,
 		subject: email.subject || null,
-		receivedAt: Date.now(),
-		html: htmlContent || null,
-		text: textContent || null
-	});
+		received_at: Date.now(),
+		html_content: htmlContent || null,
+		text_content: textContent || null
+	};
+
+	// Validate email data using Zod schema
+	const parsedEmail = emailSchema.parse(emailData);
+
+	// Insert email data into D1
+	await db.insertEmail(env.DB, parsedEmail);
 }

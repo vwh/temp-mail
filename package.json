@@ -14,7 +14,8 @@
     "@paralleldrive/cuid2": "^2.2.2",
     "hono": "^4.8.5",
     "html-to-text": "^9.0.5",
-    "postal-mime": "^2.4.4"
+    "postal-mime": "^2.4.4",
+    "zod": "^4.0.5"
   },
   "devDependencies": {
     "@types/bun": "latest",

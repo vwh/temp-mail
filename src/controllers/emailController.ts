@@ -1,6 +1,7 @@
 import { Context } from 'hono';
 
 import * as db from '@/db';
+import { Email, EmailSummary } from '@/schemas/emailSchema';
 
 type Bindings = { Bindings: CloudflareBindings };
 
@@ -11,7 +12,7 @@ export async function getEmails(c: Context<Bindings>) {
     const limit = Number(c.req.query('limit')) || 10;
     const offset = Number(c.req.query('offset')) || 0;
 
-    const results = await db.getEmailsByRecipient(DB, emailAddress, limit, offset);
+    const results = await db.getEmailsByRecipient(DB, emailAddress, limit, offset) as EmailSummary[];
 
     return c.json(results);
 }
@@ -21,7 +22,7 @@ export async function getEmailById(c: Context<Bindings>) {
 
     const emailId = c.req.param('emailId');
 
-    const result = await db.getEmailById(DB, emailId);
+    const result = await db.getEmailById(DB, emailId) as Email | null;
 
     if (!result) {
         return c.notFound();
