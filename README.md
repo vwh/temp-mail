@@ -4,6 +4,21 @@ Cloudflare Worker that acts as a temporary email inbox. It uses Hono for routing
 
 **Note**: This project serves as a starting point. While functional, there's a lot more that can be built on top of it!
 
+## Table of Contents
+
+*   [TODO List](#todo-list)
+*   [Features](#features)
+*   [Prerequisites](#prerequisites)
+*   [Setup Guide](#setup-guide)
+    *   [Project Setup](#project-setup)
+    *   [Cloudflare Configuration](#cloudflare-configuration)
+        *   [D1 Database Setup](#d1-database-setup)
+        *   [Email Routing Setup](#email-routing-setup)
+*   [Running the Worker](#running-the-worker)
+    *   [Local Development](#local-development)
+    *   [Deployment](#deployment)
+*   [API Endpoints](#api-endpoints)
+
 ## TODO List
 
 *   Add R2 for email attachments (currently attachments are ignored).
@@ -99,11 +114,25 @@ Once deployed, you can interact with your worker via these HTTP endpoints:
     *   **Example**: `https://your-worker-url/emails/x@example.com?limit=5&offset=0`
     *   **Returns**: An array of email objects with `id`, `from_address`, `to_address`, `subject`, `received_at`.
 
+*   **`DELETE /emails/:emailAddress`**
+    *   **Purpose**: Delete all emails for a specific recipient email address.
+    *   **Parameters**:
+        *   `:emailAddress` (path): The email address whose emails are to be deleted.
+    *   **Example**: `https://your-worker-url/emails/x@example.com`
+    *   **Returns**: A success message.
+
 *   **`GET /inbox/:emailId`**
     *   **Purpose**: Retrieve the full content of a specific email.
     *   **Parameters**:
         *   `:emailId` (path): The unique ID of the email.
     *   **Example**: `https://your-worker-url/inbox/some-email-id`
     *   **Returns**: An object containing the `email` details, including `html_content` and `text_content`.
+
+*   **`DELETE /inbox/:emailId`**
+    *   **Purpose**: Delete a specific email by its ID.
+    *   **Parameters**:
+        *   `:emailId` (path): The unique ID of the email to be deleted.
+    *   **Example**: `https://your-worker-url/inbox/some-email-id`
+    *   **Returns**: A success message.
 
 ---
