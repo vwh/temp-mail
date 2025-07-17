@@ -2,7 +2,7 @@ import type { Handler } from "hono";
 import * as db from "@/db";
 import { DOMAINS } from "@/domains";
 import type { Email, EmailSummary } from "@/schemas/emailSchema";
-import { domain } from "node_modules/zod/v4/core/regexes.cjs";
+import { ERR, OK } from "@/utils/response";
 
 type Env = {
 	Bindings: CloudflareBindings;
@@ -15,7 +15,7 @@ export const getEmails: Handler<Env> = async (c) => {
 	const domain = emailAddress.split("@")[1];
 
 	if (!DOMAINS.includes(domain)) {
-		return c.json({ message: "Domain not supported", domains: DOMAINS });
+		return c.json(ERR("Domain not supported", { supportedDomains: DOMAINS }));
 	}
 
 	const limit = Number(c.req.query("limit")) || 10;
@@ -28,7 +28,7 @@ export const getEmails: Handler<Env> = async (c) => {
 		offset,
 	)) as EmailSummary[];
 
-	return c.json(results);
+	return c.json(OK(results));
 };
 
 export const getEmailById: Handler<Env> = async (c) => {
@@ -42,7 +42,7 @@ export const getEmailById: Handler<Env> = async (c) => {
 		return c.notFound();
 	}
 
-	return c.json(result);
+	return c.json(OK(result));
 };
 
 export const deleteEmailsByAddress: Handler<Env> = async (c) => {
@@ -52,9 +52,7 @@ export const deleteEmailsByAddress: Handler<Env> = async (c) => {
 
 	await db.deleteEmailsByRecipient(DB, emailAddress);
 
-	return c.json({
-		message: `Emails for ${emailAddress} deleted successfully.`,
-	});
+	return c.json(OK("Emails deleted successfully"));
 };
 
 export const deleteEmailById: Handler<Env> = async (c) => {
@@ -64,13 +62,11 @@ export const deleteEmailById: Handler<Env> = async (c) => {
 
 	await db.deleteEmailById(DB, emailId);
 
-	return c.json({
-		message: `Email with ID ${emailId} deleted successfully.`,
-	});
+	return c.json(OK("Email deleted successfully"));
 };
 
 export const getSupportedDomains: Handler<Env> = async (c) => {
 	const results = DOMAINS;
 
-	return c.json(results);
+	return c.json(OK(results));
 };
