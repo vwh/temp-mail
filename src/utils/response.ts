@@ -1,3 +1,6 @@
+/**
+ *  Hono OK Response
+ */
 export function OK(result: unknown) {
 	return {
 		status: true,
@@ -5,6 +8,9 @@ export function OK(result: unknown) {
 	};
 }
 
+/**
+ *  Hono Error Response
+ */
 export function ERR(message: string, note?: Record<string, unknown>) {
 	return {
 		status: false,

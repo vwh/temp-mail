@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// Email object schema (used for storing emails in the database)
 export const emailSchema = z.object({
 	id: z.string(),
 	from_address: z.string(),
@@ -12,6 +13,7 @@ export const emailSchema = z.object({
 
 export type Email = z.infer<typeof emailSchema>;
 
+// Email summary object schema (used for listing emails)
 export const emailSummarySchema = z.object({
 	id: z.string(),
 	from_address: z.string(),
