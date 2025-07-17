@@ -8,7 +8,13 @@
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "db:create": "wrangler d1 create temp-mail-emails",
     "db:tables": "wrangler d1 execute temp-mail-emails --file ./db/schema.sql --remote",
-    "db:indexes": "wrangler d1 execute temp-mail-emails --file ./db/indexes.sql --remote"
+    "db:indexes": "wrangler d1 execute temp-mail-emails --file ./db/indexes.sql --remote",
+		"lint": "biome lint ./src",
+		"lint:fix": "biome lint --write ./src",
+		"format": "biome format --write ./src",
+		"format:check": "biome format ./src",
+		"check": "biome check ./src",
+		"check:fix": "biome check --write ./src"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
@@ -18,6 +24,7 @@
     "zod": "^4.0.5"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.1.2",
     "@types/bun": "latest",
     "@types/html-to-text": "^9.0.4",
     "wrangler": "^4.24.4"
