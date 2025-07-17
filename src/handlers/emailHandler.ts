@@ -38,6 +38,8 @@ export async function handleEmail(
 		text_content: textContent || null,
 	};
 
+	console.log("Email received:", emailData.from_address, "->", emailData.to_address);
+
 	// Validate email data using Zod schema
 	const parsedEmail = emailSchema.parse(emailData);
 
