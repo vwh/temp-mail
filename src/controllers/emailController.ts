@@ -2,6 +2,7 @@ import type { Handler } from "hono";
 import * as db from "@/db";
 import { DOMAINS } from "@/domains";
 import type { Email, EmailSummary } from "@/schemas/emailSchema";
+import { domain } from "node_modules/zod/v4/core/regexes.cjs";
 
 type Env = {
 	Bindings: CloudflareBindings;
@@ -11,6 +12,11 @@ export const getEmails: Handler<Env> = async (c) => {
 	const { DB } = c.env;
 
 	const emailAddress = c.req.param("emailAddress");
+	const domain = emailAddress.split("@")[1];
+
+	if (!DOMAINS.includes(domain)) {
+		return c.json({ message: "Domain not supported", domains: DOMAINS });
+	}
 
 	const limit = Number(c.req.query("limit")) || 10;
 	const offset = Number(c.req.query("offset")) || 0;
