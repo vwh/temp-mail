@@ -24,19 +24,39 @@ Before you begin, ensure you have the following:
 
 *   **Bun**: Installed on your system.
 *   **Cloudflare Account**: With access to Workers, Email Routing, and D1.
-*   **Wrangler CLI**: Installed globally (`npm i -g wrangler`).
 
 ## Setup Guide
 
-### 1. Cloudflare Account Configuration
+### 1. Project Setup
 
-#### a. Wrangler CLI Login
+1.  **Install Dependencies**: Install the necessary JavaScript dependencies.
+    ```bash
+    bun install
+    ```
 
-You need to log in to your Cloudflare account via Wrangler. This will open a browser for authentication.
+2.  **Login to Cloudflare**: You need to log in to your Cloudflare account via Wrangler. This will open a browser for authentication.
+    ```bash
+    bun wrangler login
+    ```
 
-```bash
-wrangler login
-```
+### 2. Cloudflare Configuration
+
+#### a. D1 Database Setup
+
+1.  **Create the D1 database**:
+    ```bash
+    bun run db:create
+    ```
+2.  **Copy the `database_id`**: From the output of the above command.
+3.  **Update `wrangler.jsonc`**: Open `wrangler.jsonc` and replace `database_id` with the `database_id` you just copied.
+4.  **Apply Database Schema**:
+    ```bash
+    bun run db:tables
+    ```
+5.  **Apply Database Indexes**:
+    ```bash
+    bun run db:indexes
+    ```
 
 #### b. Email Routing Setup
 
@@ -47,30 +67,6 @@ wrangler login
     *   For "Action", choose "Send to Worker".
     *   Select your Worker (e.g., `temp-mail`).
     *   Click "Save".
-
-#### c. D1 Database Creation
-
-1.  **Create the D1 database**: Run this command in your terminal.
-    ```bash
-    wrangler d1 create temp-mail-emails
-    ```
-2.  **Copy the `database_id`**: From the output of the above command, copy the `database_id` (it will look like `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`).
-3.  **Update `wrangler.jsonc`**: Open `wrangler.jsonc` and replace `database_id` with the `database_id` you just copied.
-
-### 2. Project Dependencies & Database Schema
-
-1.  **Install JavaScript dependencies**:
-    ```bash
-    bun install
-    ```
-2.  **Apply D1 Database Schema**: This creates the `emails` table in your D1 database.
-    ```bash
-    wrangler d1 execute temp-mail-emails --file ./db/schema.sql --remote
-    ```
-3.  **Apply D1 Database Indexes**: This adds indexes for better query performance.
-    ```bash
-    wrangler d1 execute temp-mail-emails --file ./db/indexes.sql --remote
-    ```
 
 ## Running the Worker
 

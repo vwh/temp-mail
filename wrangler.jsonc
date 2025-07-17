@@ -18,7 +18,7 @@
 		{
 			"binding": "DB",
 			"database_name": "temp-mail-emails",
-			"database_id": "1fa9da77-36f3-41ab-a9dd-3550c4399060" // You'll replace this after creating the DB
+			"database_id": "e8a508db-c2a4-475d-9136-46d61026e197" // You'll replace this after creating the DB
 		}
 	],
 	"triggers": {
