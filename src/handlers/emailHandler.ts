@@ -12,8 +12,8 @@ import { emailSchema, Email } from '@/schemas/emailSchema';
 export async function handleEmail(message: ForwardableEmailMessage, env: CloudflareBindings, ctx: ExecutionContext) {
 	const email = await PostalMime.parse(message.raw);
 
-	let htmlContent = email.html;
-	let textContent = email.text;
+	let htmlContent = email.html || null;
+	let textContent = email.text || null;
 
 	// If HTML content is missing but text content exists, generate HTML
 	if (htmlContent == null && textContent != null) {
