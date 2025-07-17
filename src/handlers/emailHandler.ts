@@ -1,9 +1,9 @@
-import * as db from '../db';
+import * as db from '@/db';
 
 import PostalMime from 'postal-mime';
 import { createId } from '@paralleldrive/cuid2';
 
-import { htmlToText, textToHtmlTemplate } from '../utils/emailContent';
+import { htmlToText, textToHtmlTemplate } from '@/utils/emailContent';
 
 /**
  * Cloudflare email router handler

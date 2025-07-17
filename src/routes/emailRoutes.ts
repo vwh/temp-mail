@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { getEmails, getEmailById, deleteEmailsByAddress, deleteEmailById } from '../controllers/emailController';
+import { getEmails, getEmailById, deleteEmailsByAddress, deleteEmailById } from '@/controllers/emailController';
 
 const emailRoutes = new Hono<{ Bindings: CloudflareBindings }>();
 

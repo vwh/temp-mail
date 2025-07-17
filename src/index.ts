@@ -1,7 +1,7 @@
-import app from './app';
+import app from '@/app';
 
-import { handleEmail } from './handlers/emailHandler';
-import { handleScheduled } from './handlers/scheduledHandler';
+import { handleEmail } from '@/handlers/emailHandler';
+import { handleScheduled } from '@/handlers/scheduledHandler';
 
 export default {
 	fetch: app.fetch,

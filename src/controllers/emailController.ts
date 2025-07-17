@@ -1,6 +1,6 @@
 import { Context } from 'hono';
 
-import * as db from '../db';
+import * as db from '@/db';
 
 type Bindings = { Bindings: CloudflareBindings };
 
