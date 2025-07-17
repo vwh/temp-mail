@@ -15,7 +15,7 @@
 		"format:check": "biome format ./src",
 		"check": "biome check ./src",
 		"check:fix": "biome check --write --unsafe ./src",
-    "tsc": "bun tsc --noEmit"
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
