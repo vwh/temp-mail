@@ -1,6 +1,6 @@
 import { D1Database } from "@cloudflare/workers-types";
 
-export async function insertEmail(db: D1Database, emailData: { id: string, from: string, to: string, subject: string | null, receivedAt: number, html: string | null, text: string | null }) {
+export async function insertEmail(db: D1Database, emailData: { id: string, from: string, to: string, subject: string | null, receivedAt: number, html: string | null | undefined, text: string | null | undefined }) {
     await db.prepare(
         `INSERT INTO emails (id, from_address, to_address, subject, received_at, html_content, text_content)
          VALUES (?, ?, ?, ?, ?, ?, ?)`

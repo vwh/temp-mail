@@ -1,27 +1,25 @@
 {
   "name": "temp-mail",
   "type": "module",
-  
   "scripts": {
     "dev": "wrangler dev --remote",
     "deploy": "wrangler deploy --minify",
     "tail": "wrangler tail",
-
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
-
     "db:create": "wrangler d1 create temp-mail-emails",
     "db:tables": "wrangler d1 execute temp-mail-emails --file ./db/schema.sql --remote",
     "db:indexes": "wrangler d1 execute temp-mail-emails --file ./db/indexes.sql --remote"
   },
-
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
     "hono": "^4.8.5",
+    "html-to-text": "^9.0.5",
     "postal-mime": "^2.4.4"
   },
   "devDependencies": {
-    "wrangler": "^4.24.4",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/html-to-text": "^9.0.4",
+    "wrangler": "^4.24.4"
   },
   "peerDependencies": {
     "typescript": "^5"
