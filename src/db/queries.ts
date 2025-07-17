@@ -39,3 +39,13 @@ export async function deleteOldEmails(db: D1Database, timestamp: number) {
     const { success, error } = await db.prepare("DELETE FROM emails WHERE received_at < ?").bind(timestamp).run();
     return { success, error };
 }
+
+export async function deleteEmailsByRecipient(db: D1Database, emailAddress: string) {
+    const { success, error } = await db.prepare("DELETE FROM emails WHERE to_address = ?").bind(emailAddress).run();
+    return { success, error };
+}
+
+export async function deleteEmailById(db: D1Database, emailId: string) {
+    const { success, error } = await db.prepare("DELETE FROM emails WHERE id = ?").bind(emailId).run();
+    return { success, error };
+}
