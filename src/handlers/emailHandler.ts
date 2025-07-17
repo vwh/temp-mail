@@ -1,15 +1,18 @@
-import * as db from '@/db';
+import { createId } from "@paralleldrive/cuid2";
 
-import PostalMime from 'postal-mime';
-import { createId } from '@paralleldrive/cuid2';
-
-import { htmlToText, textToHtmlTemplate } from '@/utils/emailContent';
-import { emailSchema, Email } from '@/schemas/emailSchema';
+import PostalMime from "postal-mime";
+import * as db from "@/db";
+import { type Email, emailSchema } from "@/schemas/emailSchema";
+import { htmlToText, textToHtmlTemplate } from "@/utils/emailContent";
 
 /**
  * Cloudflare email router handler
  */
-export async function handleEmail(message: ForwardableEmailMessage, env: CloudflareBindings, ctx: ExecutionContext) {
+export async function handleEmail(
+	message: ForwardableEmailMessage,
+	env: CloudflareBindings,
+	_ctx: ExecutionContext,
+) {
 	const email = await PostalMime.parse(message.raw);
 
 	let htmlContent = email.html || null;
@@ -32,7 +35,7 @@ export async function handleEmail(message: ForwardableEmailMessage, env: Cloudfl
 		subject: email.subject || null,
 		received_at: Date.now(),
 		html_content: htmlContent || null,
-		text_content: textContent || null
+		text_content: textContent || null,
 	};
 
 	// Validate email data using Zod schema

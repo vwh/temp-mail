@@ -1,11 +1,16 @@
-import { Hono } from 'hono';
-import { getEmails, getEmailById, deleteEmailsByAddress, deleteEmailById } from '@/controllers/emailController';
+import { Hono } from "hono";
+import {
+	deleteEmailById,
+	deleteEmailsByAddress,
+	getEmailById,
+	getEmails,
+} from "@/controllers/emailController";
 
 const emailRoutes = new Hono<{ Bindings: CloudflareBindings }>();
 
-emailRoutes.get('/emails/:emailAddress', getEmails);
-emailRoutes.delete('/emails/:emailAddress', deleteEmailsByAddress);
-emailRoutes.get('/inbox/:emailId', getEmailById);
-emailRoutes.delete('/inbox/:emailId', deleteEmailById);
+emailRoutes.get("/emails/:emailAddress", getEmails);
+emailRoutes.delete("/emails/:emailAddress", deleteEmailsByAddress);
+emailRoutes.get("/inbox/:emailId", getEmailById);
+emailRoutes.delete("/inbox/:emailId", deleteEmailById);
 
 export default emailRoutes;

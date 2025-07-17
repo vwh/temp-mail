@@ -10,11 +10,12 @@
     "db:tables": "wrangler d1 execute temp-mail-emails --file ./db/schema.sql --remote",
     "db:indexes": "wrangler d1 execute temp-mail-emails --file ./db/indexes.sql --remote",
 		"lint": "biome lint ./src",
-		"lint:fix": "biome lint --write ./src",
+		"lint:fix": "biome lint --write --unsafe ./src",
 		"format": "biome format --write ./src",
 		"format:check": "biome format ./src",
 		"check": "biome check ./src",
-		"check:fix": "biome check --write ./src"
+		"check:fix": "biome check --write --unsafe ./src",
+    "tsc": "bun tsc --noEmit"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
