@@ -7,10 +7,6 @@
 	"name": "temp-mail",
 	"main": "src/index.ts",
 	"compatibility_date": "2025-07-15",
-	"assets": {
-		"binding": "ASSETS",
-		"directory": "./public"
-	},
 	"observability": {
 		"enabled": true
 	},
