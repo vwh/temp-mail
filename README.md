@@ -133,39 +133,3 @@ To deploy your worker to Cloudflare:
 ```bash
 bun deploy
 ```
-
-## API Endpoints
-
-Once deployed, you can interact with your worker via these HTTP endpoints:
-
-*   **`GET /emails/:emailAddress`**
-    *   **Purpose**: Retrieve a paginated list of email summaries for a specific recipient email address.
-    *   **Parameters**:
-        *   `:emailAddress` (path): The email address to query (e.g., `x@example.com`).
-        *   `limit` (query, optional): Number of emails to return (default: 10).
-        *   `offset` (query, optional): Number of emails to skip (default: 0).
-    *   **Example**: `https://your-worker-url/emails/x@example.com?limit=5&offset=0`
-    *   **Returns**: An array of email objects with `id`, `from_address`, `to_address`, `subject`, `received_at`.
-
-*   **`DELETE /emails/:emailAddress`**
-    *   **Purpose**: Delete all emails for a specific recipient email address.
-    *   **Parameters**:
-        *   `:emailAddress` (path): The email address whose emails are to be deleted.
-    *   **Example**: `https://your-worker-url/emails/x@example.com`
-    *   **Returns**: A success message.
-
-*   **`GET /inbox/:emailId`**
-    *   **Purpose**: Retrieve the full content of a specific email.
-    *   **Parameters**:
-        *   `:emailId` (path): The unique ID of the email.
-    *   **Example**: `https://your-worker-url/inbox/some-email-id`
-    *   **Returns**: An object containing the `email` details, including `html_content` and `text_content`.
-
-*   **`DELETE /inbox/:emailId`**
-    *   **Purpose**: Delete a specific email by its ID.
-    *   **Parameters**:
-        *   `:emailId` (path): The unique ID of the email to be deleted.
-    *   **Example**: `https://your-worker-url/inbox/some-email-id`
-    *   **Returns**: A success message.
-
----
