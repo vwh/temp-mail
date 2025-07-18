@@ -21,6 +21,10 @@ export const DOMAINS = [
 		domain: "z44d.pro",
 	},
 	{
+		owner: "blockton",
+		domain: "wael.fun",
+	},
+	{
 		owner: "HprideH",
 		domain: "tawbah.site",
 	},

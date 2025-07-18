@@ -78,6 +78,7 @@ A big thank you to the individuals who have donated domains to support this proj
 | `iusearch.lol` | [vwh](https://github.com/vwh) |
 | `lifetalk.us` | [mm6x](https://github.com/mm6x) |
 | `z44d.pro` | [z44d](https://github.com/z44d) |
+| `wael.fun` | [z44d](https://github.com/blockton) |
 | `tawbah.site` | [HprideH](https://github.com/HprideH) |
 | `kuruptd.ink` | [HprideH](https://github.com/HprideH) |
 
