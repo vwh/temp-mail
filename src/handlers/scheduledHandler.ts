@@ -11,12 +11,10 @@ export async function handleScheduled(
 	env: CloudflareBindings,
 	_ctx: ExecutionContext,
 ) {
-	const { DB } = env;
-
 	const threeDaysAgo = Date.now() - DAYS_TO_DELETE * 24 * 60 * 60 * 1000;
 
 	// Delete old emails
-	const { success, error } = await db.deleteOldEmails(DB, threeDaysAgo);
+	const { success, error } = await db.deleteOldEmails(env.DB, threeDaysAgo);
 
 	if (success) {
 		console.log("Email cleanup completed successfully.");

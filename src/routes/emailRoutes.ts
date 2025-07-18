@@ -17,8 +17,6 @@ emailRoutes.get(
 	zValidator("param", emailAddressParamSchema),
 	zValidator("query", emailQuerySchema),
 	async (c) => {
-		const { DB } = c.env;
-
 		const { emailAddress } = c.req.valid("param");
 		const domain = emailAddress.split("@")[1];
 		if (!DOMAINS.includes(domain)) {
@@ -26,7 +24,7 @@ emailRoutes.get(
 		}
 
 		const { limit, offset } = c.req.valid("query");
-		const results = await db.getEmailsByRecipient(DB, emailAddress, limit, offset);
+		const results = await db.getEmailsByRecipient(c.env.DB, emailAddress, limit, offset);
 
 		return c.json(OK(results));
 	},

@@ -8,5 +8,3 @@ export default {
 	email: handleEmail,
 	scheduled: handleScheduled,
 };
-
-console.log("Started");
