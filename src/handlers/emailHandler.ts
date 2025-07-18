@@ -4,6 +4,7 @@ import { updateSenderStats } from "@/database/kv";
 import * as db from "@/database/queries";
 import { type Email, emailSchema } from "@/schemas/emailSchema";
 import { htmlToText, textToHtmlTemplate } from "@/utils/emailContent";
+import { throwError } from "@/utils/error";
 
 /**
  * Cloudflare email router handler - optimized version
@@ -44,7 +45,7 @@ export async function handleEmail(
 	if (senderCount.status === "fulfilled") {
 		console.log(`Sender ${message.from} has sent ${senderCount.value} emails.`);
 	} else {
-		console.error("Failed to update sender stats:", senderCount.reason);
+		throwError(`Failed to update sender stats: ${senderCount.reason}`);
 	}
 }
 

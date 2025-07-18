@@ -1,4 +1,5 @@
 import * as db from "@/database/queries";
+import { throwError } from "@/utils/error";
 
 const DAYS_TO_DELETE = 2;
 
@@ -19,6 +20,6 @@ export async function handleScheduled(
 	if (success) {
 		console.log("Email cleanup completed successfully.");
 	} else {
-		console.error("Email cleanup failed:", error);
+		throwError(`Email cleanup failed: ${error}`);
 	}
 }

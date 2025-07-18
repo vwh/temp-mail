@@ -1,7 +1,9 @@
+import { throwError } from "@/utils/error";
+
 /**
  * Update sender statistics
  */
-export async function updateSenderStats(kv: KVNamespace, senderAddress: string): Promise<number> {
+export async function updateSenderStats(kv: KVNamespace, senderAddress: string) {
 	const senderKey = `sender_count:${senderAddress}`;
 
 	try {
@@ -9,12 +11,11 @@ export async function updateSenderStats(kv: KVNamespace, senderAddress: string):
 		const newCount = (currentCountStr ? parseInt(currentCountStr, 10) : 0) + 1;
 
 		kv.put(senderKey, newCount.toString()).catch((error) => {
-			console.error(`KV put failed for ${senderKey}:`, error);
+			throwError(`KV put failed for ${senderKey}: ${error}`);
 		});
 
 		return newCount;
 	} catch (error) {
-		console.error(`Failed to get/update KV for ${senderKey}:`, error);
-		throw error;
+		throwError(`Failed to get/update KV for ${senderKey}: ${error}`);
 	}
 }
