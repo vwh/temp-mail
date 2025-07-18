@@ -1,17 +1,14 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import {
-	deleteEmailById,
-	deleteEmailsByAddress,
-	getEmailById,
-	getEmails,
-	getSupportedDomains,
-} from "@/controllers/emailController";
+import * as db from "@/database/queries";
+import { DOMAINS } from "@/domains";
 import {
 	emailAddressParamSchema,
 	emailIdParamSchema,
 	emailQuerySchema,
 } from "@/schemas/emailRouterSchema";
+import type { Email, EmailSummary } from "@/schemas/emailSchema";
+import { ERR, OK } from "@/utils/response";
 
 const emailRoutes = new Hono<{ Bindings: CloudflareBindings }>();
 
@@ -20,23 +17,59 @@ emailRoutes.get(
 	"/emails/:emailAddress",
 	zValidator("param", emailAddressParamSchema),
 	zValidator("query", emailQuerySchema),
-	getEmails,
+	async (c) => {
+		const { DB } = c.env;
+
+		const { emailAddress } = c.req.valid("param");
+		const domain = emailAddress.split("@")[1];
+		if (!DOMAINS.includes(domain)) {
+			return c.json(ERR("Domain not supported", { supportedDomains: DOMAINS }));
+		}
+
+		const { limit, offset } = c.req.valid("query");
+		const results = (await db.getEmailsByRecipient(
+			DB,
+			emailAddress,
+			limit,
+			offset,
+		)) as EmailSummary[];
+
+		return c.json(OK(results));
+	},
 );
 
 // DELETE /emails | Delete all emails for a specific email address
 emailRoutes.delete(
 	"/emails/:emailAddress",
 	zValidator("param", emailAddressParamSchema),
-	deleteEmailsByAddress,
+	async (c) => {
+		const emailAddress = c.req.param("emailAddress");
+
+		await db.deleteEmailsByRecipient(c.env.DB, emailAddress);
+		return c.json(OK("Emails deleted successfully"));
+	},
 );
 
 // GET /inbox/:emailId | Show a specific email inbox
-emailRoutes.get("/inbox/:emailId", zValidator("param", emailIdParamSchema), getEmailById);
+emailRoutes.get("/inbox/:emailId", zValidator("param", emailIdParamSchema), async (c) => {
+	const { emailId } = c.req.valid("param");
+	const result = (await db.getEmailById(c.env.DB, emailId)) as Email | null;
+
+	if (!result) return c.notFound();
+	return c.json(OK(result));
+});
 
 // DELETE /inbox/:emailId | Delete a specific email inbox
-emailRoutes.delete("/inbox/:emailId", zValidator("param", emailIdParamSchema), deleteEmailById);
+emailRoutes.delete("/inbox/:emailId", zValidator("param", emailIdParamSchema), async (c) => {
+	const emailId = c.req.param("emailId");
+
+	await db.deleteEmailById(c.env.DB, emailId);
+	return c.json(OK("Email deleted successfully"));
+});
 
 // GET /domains | Show a list of supported email domains
-emailRoutes.get("/domains", getSupportedDomains);
+emailRoutes.get("/domains", async (c) => {
+	return c.json(OK(DOMAINS));
+});
 
 export default emailRoutes;
