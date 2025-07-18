@@ -45,4 +45,16 @@ export async function handleEmail(
 
 	// Insert email data into D1
 	await db.insertEmail(env.DB, parsedEmail);
+
+	// Update sender statistics in KV
+	try {
+		const senderKey = `sender_count:${message.from}`;
+		const currentCountStr = await env.EMAIL_STATS_KV.get(senderKey);
+		let currentCount = currentCountStr ? parseInt(currentCountStr) : 0;
+		currentCount++;
+		await env.EMAIL_STATS_KV.put(senderKey, currentCount.toString());
+		console.log(`Sender ${message.from} has sent ${currentCount} emails.`);
+	} catch (kvError) {
+		console.error("Failed to update KV for sender stats:", kvError);
+	}
 }

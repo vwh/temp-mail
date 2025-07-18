@@ -14,6 +14,7 @@ Cloudflare Worker that acts as a temporary email inbox. It uses Hono for routing
     *   [Project Setup](#project-setup)
     *   [Cloudflare Configuration](#cloudflare-configuration)
         *   [D1 Database Setup](#d1-database-setup)
+        *   [KV Namespace Setup](#kv-namespace-setup)
         *   [Email Routing Setup](#email-routing-setup)
 *   [Running the Worker](#running-the-worker)
     *   [Local Development](#local-development)
@@ -133,7 +134,16 @@ Before you begin, ensure you have the following:
     bun run db:indexes
     ```
 
-#### b. Email Routing Setup
+#### b. KV Namespace Setup
+
+1.  **Create the KV Namespace**:
+    ```bash
+    bun run kv:create
+    ```
+2.  **Copy the `id`**: From the output of the above command.
+3.  **Update `wrangler.jsonc`**: Open `wrangler.jsonc` and add the `id` to the `kv_namespaces` binding for `EMAIL_STATS_KV`.
+
+#### c. Email Routing Setup
 
 1.  **Go to your Cloudflare Dashboard**: Select your domain (`example.com`).
 2.  **Navigate to "Email" -> "Email Routing"**.

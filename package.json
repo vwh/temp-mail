@@ -9,6 +9,7 @@
     "db:create": "wrangler d1 create temp-mail-emails",
     "db:tables": "wrangler d1 execute temp-mail-emails --file ./sql/schema.sql --remote",
     "db:indexes": "wrangler d1 execute temp-mail-emails --file ./sql/indexes.sql --remote",
+    "kv:create": "wrangler kv namespace create temp-mail-stats --preview",
     "lint": "biome lint ./src",
     "lint:fix": "biome lint --write --unsafe ./src",
     "format": "biome format --write ./src",
