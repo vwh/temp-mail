@@ -1,7 +1,6 @@
 import { Hono } from "hono";
-import { corsMiddleware } from "./middlewares/cors";
-
 import emailRoutes from "@/routes/emailRoutes";
+import { corsMiddleware } from "./middlewares/cors";
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 

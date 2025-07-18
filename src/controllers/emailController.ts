@@ -1,5 +1,5 @@
 import type { Handler } from "hono";
-import * as db from "@/db";
+import * as db from "@/database/queries";
 import { DOMAINS } from "@/domains";
 import type { Email, EmailSummary } from "@/schemas/emailSchema";
 import { ERR, OK } from "@/utils/response";

@@ -1,3 +1,3 @@
-import { cors } from 'hono/cors'
+import { cors } from "hono/cors";
 
-export const corsMiddleware = cors()
+export const corsMiddleware = cors();

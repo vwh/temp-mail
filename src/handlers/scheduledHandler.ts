@@ -1,4 +1,4 @@
-import * as db from "@/db";
+import * as db from "@/database/queries";
 
 const DAYS_TO_DELETE = 2;
 
