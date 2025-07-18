@@ -6,4 +6,6 @@ export const DOMAINS = [
 	"z44d.pro",
 	"vwh.sh",
 	"wael.fun",
+	"tawbah.site",
+	"kuruptd.ink",
 ];
