@@ -7,7 +7,6 @@ import {
 	emailIdParamSchema,
 	emailQuerySchema,
 } from "@/schemas/emailRouterSchema";
-import type { Email, EmailSummary } from "@/schemas/emailSchema";
 import { ERR, OK } from "@/utils/response";
 
 const emailRoutes = new Hono<{ Bindings: CloudflareBindings }>();
@@ -27,12 +26,7 @@ emailRoutes.get(
 		}
 
 		const { limit, offset } = c.req.valid("query");
-		const results = (await db.getEmailsByRecipient(
-			DB,
-			emailAddress,
-			limit,
-			offset,
-		)) as EmailSummary[];
+		const results = await db.getEmailsByRecipient(DB, emailAddress, limit, offset);
 
 		return c.json(OK(results));
 	},
@@ -53,7 +47,7 @@ emailRoutes.delete(
 // GET /inbox/:emailId | Show a specific email inbox
 emailRoutes.get("/inbox/:emailId", zValidator("param", emailIdParamSchema), async (c) => {
 	const { emailId } = c.req.valid("param");
-	const result = (await db.getEmailById(c.env.DB, emailId)) as Email | null;
+	const result = await db.getEmailById(c.env.DB, emailId);
 
 	if (!result) return c.notFound();
 	return c.json(OK(result));

@@ -1,5 +1,5 @@
 import type { D1Database } from "@cloudflare/workers-types";
-import type { Email } from "@/schemas/emailSchema";
+import type { Email, EmailSummary } from "@/schemas/emailSchema";
 
 /**
  * Insert an email into the database
@@ -41,7 +41,7 @@ export async function getEmailsByRecipient(
 		)
 		.bind(emailAddress, limit, offset)
 		.all();
-	return results;
+	return results as EmailSummary[];
 }
 
 /**
@@ -49,7 +49,7 @@ export async function getEmailsByRecipient(
  */
 export async function getEmailById(db: D1Database, emailId: string) {
 	const emailResult = await db.prepare("SELECT * FROM emails WHERE id = ?").bind(emailId).first();
-	return emailResult;
+	return emailResult as Email | null;
 }
 
 /**
