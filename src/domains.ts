@@ -1,11 +1,36 @@
 // List of supported email domains
 export const DOMAINS = [
-	"iusearch.lol",
-	"lifetalk.us",
-	"barid.site",
-	"z44d.pro",
-	"vwh.sh",
-	"wael.fun",
-	"tawbah.site",
-	"kuruptd.ink",
-];
+	{
+		owner: "vwh",
+		domain: "barid.site",
+	},
+	{
+		owner: "vwh",
+		domain: "vwh.sh",
+	},
+	{
+		owner: "vwh",
+		domain: "iusearch.lol",
+	},
+	{
+		owner: "mm6x",
+		domain: "lifetalk.us",
+	},
+	{
+		owner: "z44d",
+		domain: "z44d.pro",
+	},
+	{
+		owner: "HprideH",
+		domain: "tawbah.site",
+	},
+	{
+		owner: "HprideH",
+		domain: "kuruptd.ink",
+	},
+] satisfies {
+	owner: string;
+	domain: string;
+}[];
+
+export const DOMAINS_SET = new Set(DOMAINS.map((d) => d.domain));

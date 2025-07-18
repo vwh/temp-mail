@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import * as db from "@/database/queries";
-import { DOMAINS } from "@/domains";
+import { DOMAINS_SET } from "@/domains";
 import {
 	emailAddressParamSchema,
 	emailIdParamSchema,
@@ -19,8 +19,8 @@ emailRoutes.get(
 	async (c) => {
 		const { emailAddress } = c.req.valid("param");
 		const domain = emailAddress.split("@")[1];
-		if (!DOMAINS.includes(domain)) {
-			return c.json(ERR("Domain not supported", { supportedDomains: DOMAINS }));
+		if (!DOMAINS_SET.has(domain)) {
+			return c.json(ERR("Domain not supported", { supportedDomains: Array.from(DOMAINS_SET) }));
 		}
 
 		const { limit, offset } = c.req.valid("query");
@@ -61,7 +61,7 @@ emailRoutes.delete("/inbox/:emailId", zValidator("param", emailIdParamSchema), a
 
 // GET /domains | Show a list of supported email domains
 emailRoutes.get("/domains", async (c) => {
-	return c.json(OK(DOMAINS));
+	return c.json(OK(Array.from(DOMAINS_SET)));
 });
 
 export default emailRoutes;

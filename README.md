@@ -8,8 +8,9 @@ Cloudflare Worker that acts as a temporary email inbox. It uses Hono for routing
 
 *   [API Endpoints](#api-endpoints)
 *   [Features](#features)
-*   [Prerequisites](#prerequisites)
+*   [Supporters](#supporters)
 *   [Setup Guide](#setup-guide)
+    *   [Prerequisites](#prerequisites)
     *   [Project Setup](#project-setup)
     *   [Cloudflare Configuration](#cloudflare-configuration)
         *   [D1 Database Setup](#d1-database-setup)
@@ -66,14 +67,39 @@ You can interact with the Temp Mail Worker API via these HTTP endpoints.
 *   Provides API endpoints to the emails
 *   Automatically cleans up old emails
 
-## Prerequisites
+## Supporters
+
+A big thank you to the individuals who have donated domains to support this project. Your contributions help keep this service running.
+
+| Domain | Donated by |
+| --- | --- |
+| `barid.site` | [vwh](https://github.com/vwh) |
+| `vwh.sh` | [vwh](https://github.com/vwh) |
+| `iusearch.lol` | [vwh](https://github.com/vwh) |
+| `lifetalk.us` | [mm6x](https://github.com/mm6x) |
+| `z44d.pro` | [z44d](https://github.com/z44d) |
+| `tawbah.site` | [HprideH](https://github.com/HprideH) |
+| `kuruptd.ink` | [HprideH](https://github.com/HprideH) |
+
+### How to Donate a Domain
+
+If you have an unused domain and would like to contribute, you can donate it by following these steps:
+
+1.  **Update your domain's nameservers to:**
+    *   `algin.ns.cloudflare.com`
+    *   `marjory.ns.cloudflare.com`
+2.  **Create a Pull Request**: Add your domain and owner information to the `domains.ts` file in the `src` directory.
+
+---
+
+## Setup Guide
+
+### Prerequisites
 
 Before you begin, ensure you have the following:
 
 *   **Bun**: Installed on your system.
 *   **Cloudflare Account**: With access to Workers, Email Routing, and D1.
-
-## Setup Guide
 
 ### 1. Project Setup
 
