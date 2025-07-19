@@ -34,8 +34,8 @@ export const DOMAINS = [
 	},
 	{
 		owner: "superhexa",
-		domain: "hexworld.cc"
-	}
+		domain: "hexworld.cc",
+	},
 ] satisfies {
 	owner: string;
 	domain: string;
