@@ -33,7 +33,7 @@ export const DOMAINS = [
 		domain: "kuruptd.ink",
 	},
 	{
-		owner: "Hexa",
+		owner: "superhexa",
 		domain: "hexworld.cc"
 	}
 ] satisfies {
