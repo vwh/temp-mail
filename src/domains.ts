@@ -32,6 +32,10 @@ export const DOMAINS = [
 		owner: "HprideH",
 		domain: "kuruptd.ink",
 	},
+	{
+		owner: "Hexa",
+		domain: "hexworld.cc"
+	}
 ] satisfies {
 	owner: string;
 	domain: string;
