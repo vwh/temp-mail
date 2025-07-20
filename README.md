@@ -88,10 +88,8 @@ A big thank you to the individuals who have donated domains to support this proj
 
 If you have an unused domain and would like to contribute, you can donate it by following these steps:
 
-1.  **Update your domain's nameservers to:**
-    *   `algin.ns.cloudflare.com`
-    *   `marjory.ns.cloudflare.com`
-2.  **Create a Pull Request**: Add your domain and owner information to the `domains.ts` file in the `src` directory.
+1.  **Create a Pull Request**: Add your domain and owner information to the `domains.ts` file in the `src` directory.
+2.  **Nameserver Provisioning**: After your pull request, we will provide you with the nameservers to update for your domain.
 
 ---
 
