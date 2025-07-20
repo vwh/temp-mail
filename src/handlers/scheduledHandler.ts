@@ -1,4 +1,5 @@
 import * as db from "@/database/queries";
+import { now } from "@/utils/date";
 import { throwError } from "@/utils/error";
 
 const DAYS_TO_DELETE = 2;
@@ -12,7 +13,7 @@ export async function handleScheduled(
 	env: CloudflareBindings,
 	_ctx: ExecutionContext,
 ) {
-	const threeDaysAgo = Date.now() - DAYS_TO_DELETE * 24 * 60 * 60 * 1000;
+	const threeDaysAgo = now() - DAYS_TO_DELETE * 24 * 60 * 60;
 
 	// Delete old emails
 	const { success, error } = await db.deleteOldEmails(env.DB, threeDaysAgo);

@@ -3,6 +3,7 @@ import PostalMime from "postal-mime";
 import { updateSenderStats } from "@/database/kv";
 import * as db from "@/database/queries";
 import { type Email, emailSchema } from "@/schemas/emailSchema";
+import { now } from "@/utils/date";
 import { htmlToText, textToHtmlTemplate } from "@/utils/emailContent";
 import { throwError } from "@/utils/error";
 
@@ -26,7 +27,7 @@ export async function handleEmail(
 		from_address: message.from,
 		to_address: message.to,
 		subject: email.subject || null,
-		received_at: Date.now(),
+		received_at: now(),
 		html_content: htmlContent,
 		text_content: textContent,
 	};
