@@ -2,11 +2,12 @@
 
 Cloudflare Worker that acts as a temporary email inbox. It uses Hono for routing, and Cloudflare D1 for storing emails.
 
-**Note**: This project serves as a starting point. While functional, there's a lot more that can be built on top of it!
+## API Documentation
+
+Simple API documentation is hosted at [https://api.barid.site](https://api.barid.site).
 
 ## Table of Contents
 
-*   [API Endpoints](#api-endpoints)
 *   [Features](#features)
 *   [Supporters](#supporters)
 *   [Setup Guide](#setup-guide)
@@ -19,45 +20,6 @@ Cloudflare Worker that acts as a temporary email inbox. It uses Hono for routing
 *   [Running the Worker](#running-the-worker)
     *   [Local Development](#local-development)
     *   [Deployment](#deployment)
-
-## API Endpoints
-
-You can interact with the Temp Mail Worker API via these HTTP endpoints.
-
-*   **`GET /domains`**
-    *   **Purpose**: Retrieve a list of supported email domains.
-    *   **Example**: `https://api.barid.site/domains`
-    *   **Returns**: An array of strings, each representing a supported domain (e.g., `["example.com", "test.org"]`).
-
-*   **`GET /emails/:emailAddress`**
-    *   **Purpose**: Retrieve a paginated list of email summaries for a specific recipient email address.
-    *   **Parameters**:
-        *   `:emailAddress` (path): The full email address to query (e.g., `user@example.com`).
-        *   `limit` (query, optional): Maximum number of emails to return per page (default: 10).
-        *   `offset` (query, optional): Number of emails to skip for pagination (default: 0).
-    *   **Example**: `https://api.barid.site/emails/x@example.com?limit=5&offset=0`
-    *   **Returns**: An array of email objects, each with `id`, `from_address`, `to_address`, `subject`, and `received_at`.
-
-*   **`DELETE /emails/:emailAddress`**
-    *   **Purpose**: Delete all emails associated with a specific recipient email address.
-    *   **Parameters**:
-        *   `:emailAddress` (path): The full email address whose emails are to be deleted.
-    *   **Example**: `https://api.barid.site/emails/x@example.com`
-    *   **Returns**: A success message indicating the deletion.
-
-*   **`GET /inbox/:emailId`**
-    *   **Purpose**: Retrieve the full content of a specific email by its unique ID.
-    *   **Parameters**:
-        *   `:emailId` (path): The unique identifier of the email.
-    *   **Example**: `https://api.barid.site/inbox/some-email-id`
-    *   **Returns**: An object containing the full `email` details, including `html_content` and `text_content`.
-
-*   **`DELETE /inbox/:emailId`**
-    *   **Purpose**: Delete a specific email by its unique ID.
-    *   **Parameters**:
-        *   `:emailId` (path): The unique identifier of the email to be deleted.
-    *   **Example**: `https://api.barid.site/inbox/some-email-id`
-    *   **Returns**: A success message indicating the deletion.
 
 ---
 
