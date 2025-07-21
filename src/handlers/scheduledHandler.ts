@@ -2,21 +2,21 @@ import * as db from "@/database/queries";
 import { now } from "@/utils/date";
 import { throwError } from "@/utils/error";
 
-const DAYS_TO_DELETE = 2;
+const HOURS_TO_DELETE = 8;
 
 /**
  * Cloudflare Scheduled Function
- * Delete emails older than 2 days
+ * Delete emails older than 8 hours
  */
 export async function handleScheduled(
 	_event: ScheduledEvent,
 	env: CloudflareBindings,
 	_ctx: ExecutionContext,
 ) {
-	const threeDaysAgo = now() - DAYS_TO_DELETE * 24 * 60 * 60;
+	const cutoffTimestamp = now() - HOURS_TO_DELETE * 60 * 60; // 8 hours ago in seconds
 
 	// Delete old emails
-	const { success, error } = await db.deleteOldEmails(env.DB, threeDaysAgo);
+	const { success, error } = await db.deleteOldEmails(env.DB, cutoffTimestamp);
 
 	if (success) {
 		console.log("Email cleanup completed successfully.");
