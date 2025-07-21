@@ -5,7 +5,7 @@ import type { Email, EmailSummary } from "@/schemas/emailSchema";
  * Insert an email into the database
  */
 export async function insertEmail(db: D1Database, emailData: Email) {
-	await db
+	return await db
 		.prepare(
 			`INSERT INTO emails (id, from_address, to_address, subject, received_at, html_content, text_content)
          VALUES (?, ?, ?, ?, ?, ?, ?)`,

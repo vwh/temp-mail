@@ -38,14 +38,16 @@ export async function handleEmail(
 	const parsedEmail = emailSchema.parse(emailData);
 
 	// Execute database insert and KV update
-	const [, senderCount] = await Promise.allSettled([
+	const [emailResult, senderCount] = await Promise.allSettled([
 		db.insertEmail(env.DB, parsedEmail),
 		updateSenderStats(env.EMAIL_STATS_KV, message.from),
 	]);
 
-	if (senderCount.status === "fulfilled") {
-		console.log(`Sender ${message.from} has sent ${senderCount.value} emails.`);
-	} else {
+	if (emailResult.status === "rejected") {
+		throwError(`Failed to insert email: ${emailResult.reason}`);
+	}
+
+	if (senderCount.status === "rejected") {
 		throwError(`Failed to update sender stats: ${senderCount.reason}`);
 	}
 }
