@@ -1,10 +1,10 @@
 # Temp Mail Worker
 
-Cloudflare Worker that acts as a temporary email inbox. It uses Hono for routing, and Cloudflare D1 for storing emails.
+Cloudflare Worker that acts as a temporary email inbox.
 
 ## API Documentation
 
-Simple API documentation is hosted at [https://api.barid.site](https://api.barid.site).
+The API documentation is hosted at [https://api.barid.site](https://api.barid.site).
 
 ## Table of Contents
 
@@ -64,7 +64,7 @@ Before you begin, ensure you have the following:
 *   **Bun**: Installed on your system.
 *   **Cloudflare Account**: With access to Workers, Email Routing, and D1.
 
-### 1. Project Setup
+### Project Setup
 
 1.  **Install Dependencies**: Install the necessary JavaScript dependencies.
     ```bash
@@ -76,9 +76,9 @@ Before you begin, ensure you have the following:
     bun wrangler login
     ```
 
-### 2. Cloudflare Configuration
+### Cloudflare Configuration
 
-#### a. D1 Database Setup
+#### D1 Database Setup
 
 1.  **Create the D1 database**:
     ```bash
@@ -95,7 +95,7 @@ Before you begin, ensure you have the following:
     bun run db:indexes
     ```
 
-#### b. KV Namespace Setup
+#### KV Namespace Setup
 
 1.  **Create the KV Namespace**:
     ```bash
@@ -104,7 +104,7 @@ Before you begin, ensure you have the following:
 2.  **Copy the `id`**: From the output of the above command.
 3.  **Update `wrangler.jsonc`**: Open `wrangler.jsonc` and add the `id` to the `kv_namespaces` binding for `EMAIL_STATS_KV`.
 
-#### c. Email Routing Setup
+#### Email Routing Setup
 
 1.  **Go to your Cloudflare Dashboard**: Select your domain (`example.com`).
 2.  **Navigate to "Email" -> "Email Routing"**.
