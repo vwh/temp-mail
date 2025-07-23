@@ -1,11 +1,10 @@
 import { createId } from "@paralleldrive/cuid2";
 import PostalMime from "postal-mime";
+import * as db from "@/database/d1";
 import { updateSenderStats } from "@/database/kv";
-import * as db from "@/database/queries";
 import { type Email, emailSchema } from "@/schemas/emailSchema";
-import { now } from "@/utils/date";
-import { htmlToText, textToHtmlTemplate } from "@/utils/emailContent";
-import { throwError } from "@/utils/error";
+import { now, throwError } from "@/utils/helpers";
+import { processEmailContent } from "@/utils/mail";
 
 /**
  * Cloudflare email router handler - optimized version
@@ -39,8 +38,8 @@ export async function handleEmail(
 
 	// Execute database insert and KV update
 	const [emailResult, senderCount] = await Promise.allSettled([
-		db.insertEmail(env.DB, parsedEmail),
-		updateSenderStats(env.EMAIL_STATS_KV, message.from),
+		db.insertEmail(env.D1, parsedEmail),
+		updateSenderStats(env.KV, message.from),
 	]);
 
 	if (emailResult.status === "rejected") {
@@ -50,33 +49,4 @@ export async function handleEmail(
 	if (senderCount.status === "rejected") {
 		throwError(`Failed to update sender stats: ${senderCount.reason}`);
 	}
-}
-
-/**
- * Process email content
- */
-function processEmailContent(
-	html: string | null,
-	text: string | null,
-): {
-	htmlContent: string | null;
-	textContent: string | null;
-} {
-	// Both exist - return as-is
-	if (html && text) {
-		return { htmlContent: html, textContent: text };
-	}
-
-	// Only HTML exists - generate text
-	if (html && !text) {
-		return { htmlContent: html, textContent: htmlToText(html) };
-	}
-
-	// Only text exists - generate HTML
-	if (!html && text) {
-		return { htmlContent: textToHtmlTemplate(text), textContent: text };
-	}
-
-	// Neither exists
-	return { htmlContent: null, textContent: null };
 }

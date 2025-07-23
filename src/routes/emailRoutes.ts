@@ -1,13 +1,14 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import * as db from "@/database/queries";
-import { DOMAINS_SET } from "@/domains";
+import { DOMAINS_SET } from "@/config/domains";
+import * as db from "@/database/d1";
 import {
 	emailAddressParamSchema,
 	emailIdParamSchema,
 	emailQuerySchema,
 } from "@/schemas/emailRouterSchema";
-import { ERR, OK } from "@/utils/response";
+import { ERR, OK } from "@/utils/http";
+import { getDomain } from "@/utils/mail";
 
 const emailRoutes = new Hono<{ Bindings: CloudflareBindings }>();
 
@@ -18,13 +19,13 @@ emailRoutes.get(
 	zValidator("query", emailQuerySchema),
 	async (c) => {
 		const { emailAddress } = c.req.valid("param");
-		const domain = emailAddress.split("@")[1];
+		const domain = getDomain(emailAddress);
 		if (!DOMAINS_SET.has(domain)) {
 			return c.json(ERR("Domain not supported", { supportedDomains: Array.from(DOMAINS_SET) }));
 		}
 
 		const { limit, offset } = c.req.valid("query");
-		const results = await db.getEmailsByRecipient(c.env.DB, emailAddress, limit, offset);
+		const results = await db.getEmailsByRecipient(c.env.D1, emailAddress, limit, offset);
 
 		return c.json(OK(results));
 	},
@@ -37,7 +38,7 @@ emailRoutes.delete(
 	async (c) => {
 		const emailAddress = c.req.param("emailAddress");
 
-		await db.deleteEmailsByRecipient(c.env.DB, emailAddress);
+		await db.deleteEmailsByRecipient(c.env.D1, emailAddress);
 		return c.json(OK("Emails deleted successfully"));
 	},
 );
@@ -45,7 +46,7 @@ emailRoutes.delete(
 // GET /inbox/:emailId | Show a specific email inbox
 emailRoutes.get("/inbox/:emailId", zValidator("param", emailIdParamSchema), async (c) => {
 	const { emailId } = c.req.valid("param");
-	const result = await db.getEmailById(c.env.DB, emailId);
+	const result = await db.getEmailById(c.env.D1, emailId);
 
 	if (!result) return c.notFound();
 	return c.json(OK(result));
@@ -55,7 +56,7 @@ emailRoutes.get("/inbox/:emailId", zValidator("param", emailIdParamSchema), asyn
 emailRoutes.delete("/inbox/:emailId", zValidator("param", emailIdParamSchema), async (c) => {
 	const emailId = c.req.param("emailId");
 
-	await db.deleteEmailById(c.env.DB, emailId);
+	await db.deleteEmailById(c.env.D1, emailId);
 	return c.json(OK("Email deleted successfully"));
 });
 

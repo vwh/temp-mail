@@ -1,4 +1,5 @@
 // List of supported email domains
+
 export const DOMAINS = [
 	{
 		owner: "vwh",

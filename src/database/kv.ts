@@ -1,4 +1,4 @@
-import { throwError } from "@/utils/error";
+import { throwError } from "@/utils/helpers";
 import { getDomain } from "@/utils/mail";
 
 /**

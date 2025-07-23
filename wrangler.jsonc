@@ -12,16 +12,16 @@
 	},
 	"d1_databases": [
 		{
-			"binding": "DB",
-			"database_name": "temp-mail-emails",
-			"database_id": "e8a508db-c2a4-475d-9136-46d61026e197" // Replace with the ID from `bun run db:create`
+			"binding": "D1",
+			"database_name": "temp-mail-d1",
+			"database_id": "7a8d8ce6-df0e-4c56-8a7a-e3f5895a4771" // Replace with the ID from `bun run db:create`
 		}
 	],
 	"kv_namespaces": [
 		{
-			"binding": "EMAIL_STATS_KV",
-			"id": "9db395e1e55e4735b1b69cdd8429e7c5", // Replace with the ID from `bun run kv:create`
-			"preview_id": "9db395e1e55e4735b1b69cdd8429e7c5" // Replace with the ID from `bun run kv:create`
+			"binding": "KV",
+			"id": "73f6b6ffe8e94b5db08ed815d92b44e6", // Replace with the ID from `bun run kv:create`
+			"preview_id": "73f6b6ffe8e94b5db08ed815d92b44e6" // Replace with the ID from `bun run kv:create`
 		}
 	],
 	"triggers": {

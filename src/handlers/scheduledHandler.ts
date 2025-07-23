@@ -1,6 +1,5 @@
-import * as db from "@/database/queries";
-import { now } from "@/utils/date";
-import { throwError } from "@/utils/error";
+import * as db from "@/database/d1";
+import { now, throwError } from "@/utils/helpers";
 
 const HOURS_TO_DELETE = 4;
 
@@ -13,10 +12,9 @@ export async function handleScheduled(
 	env: CloudflareBindings,
 	_ctx: ExecutionContext,
 ) {
-	const cutoffTimestamp = now() - HOURS_TO_DELETE * 60 * 60; // 4 hours ago in seconds
+	const cutoffTimestamp = now() - HOURS_TO_DELETE * 60 * 60;
 
-	// Delete old emails
-	const { success, error } = await db.deleteOldEmails(env.DB, cutoffTimestamp);
+	const { success, error } = await db.deleteOldEmails(env.D1, cutoffTimestamp);
 
 	if (success) {
 		console.log("Email cleanup completed successfully.");
