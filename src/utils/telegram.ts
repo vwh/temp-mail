@@ -5,7 +5,7 @@ export async function sendMessage(text: string, env: CloudflareBindings) {
 
 	const url = `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`;
 
-	const _res = await fetch(url, {
+	await fetch(url, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",

@@ -14,7 +14,7 @@ export const emailSchema = z.object({
 export type Email = z.infer<typeof emailSchema>;
 
 // Email summary object schema (used for listing emails)
-export const emailSummarySchema = z.object({
+const emailSummarySchema = z.object({
 	id: z.string(),
 	from_address: z.string(),
 	to_address: z.string(),

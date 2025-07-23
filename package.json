@@ -16,7 +16,8 @@
     "format:check": "biome format ./src",
     "check": "biome check ./src",
     "check:fix": "biome check --write --unsafe ./src",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "knip": "knip"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.7.1",
@@ -30,6 +31,9 @@
     "@biomejs/biome": "^2.1.2",
     "@types/bun": "latest",
     "@types/html-to-text": "^9.0.4",
+    "@types/node": "^24.1.0",
+    "knip": "^5.62.0",
+    "typescript": "^5.8.3",
     "wrangler": "^4.24.4"
   },
   "peerDependencies": {
