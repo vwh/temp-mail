@@ -1,10 +1,11 @@
 import { throwError } from "@/utils/error";
+import { getDomain } from "@/utils/mail";
 
 /**
  * Update sender statistics
  */
 export async function updateSenderStats(kv: KVNamespace, senderAddress: string) {
-	const senderKey = `sender_count:${senderAddress}`;
+	const senderKey = `sender_count:${getDomain(senderAddress)}`;
 
 	try {
 		const currentCountStr = await kv.get(senderKey);
