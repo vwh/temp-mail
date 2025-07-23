@@ -50,7 +50,7 @@ A big thank you to the individuals who have donated domains to support this proj
 
 If you have an unused domain and would like to contribute, you can donate it by following these steps:
 
-1.  **Create a Pull Request**: Add your domain and owner information to the `domains.ts` file in the `src` directory.
+1.  **Create a Pull Request**: Add your domain and owner information to the `config/domains.ts` file in the `src` directory.
 2.  **Nameserver Provisioning**: After your pull request, we will provide you with the nameservers to update for your domain.
 
 ---
@@ -102,7 +102,7 @@ Before you begin, ensure you have the following:
     bun run kv:create
     ```
 2.  **Copy the `id`**: From the output of the above command.
-3.  **Update `wrangler.jsonc`**: Open `wrangler.jsonc` and add the `id` to the `kv_namespaces` binding for `EMAIL_STATS_KV`.
+3.  **Update `wrangler.jsonc`**: Open `wrangler.jsonc` and replace `id` and `preview_id` with the `id` you just copied.
 
 #### Email Routing Setup
 
