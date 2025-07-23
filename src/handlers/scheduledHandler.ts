@@ -12,7 +12,7 @@ const HOURS_TO_DELETE = 4;
 export async function handleScheduled(
 	_event: ScheduledEvent,
 	env: CloudflareBindings,
-	_ctx: ExecutionContext,
+	ctx: ExecutionContext,
 ) {
 	const cutoffTimestamp = now() - HOURS_TO_DELETE * 60 * 60;
 
@@ -20,7 +20,7 @@ export async function handleScheduled(
 
 	if (success) {
 		console.log("Email cleanup completed successfully.");
-		await sendMessage("Email cleanup completed successfully.", env);
+		ctx.waitUntil(sendMessage("Email cleanup completed successfully.", env));
 	} else {
 		throwError(`Email cleanup failed: ${error}`);
 	}
@@ -33,7 +33,7 @@ export async function handleScheduled(
 export async function handleDailyReport(
 	_event: ScheduledEvent,
 	env: CloudflareBindings,
-	_ctx: ExecutionContext,
+	ctx: ExecutionContext,
 ) {
 	const topSenders = await kv.getTopSenders(env.KV, 10);
 
@@ -41,5 +41,5 @@ export async function handleDailyReport(
 		.map(({ name, count }) => `*${name}*: ${count}`)
 		.join("\n")}`;
 
-	await sendMessage(message, env);
+	ctx.waitUntil(sendMessage(message, env));
 }
