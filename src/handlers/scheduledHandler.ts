@@ -1,6 +1,7 @@
 import * as db from "@/database/d1";
 import * as kv from "@/database/kv";
 import { now } from "@/utils/helpers";
+import { logInfo } from "@/utils/logger";
 import { sendMessage } from "@/utils/telegram";
 
 const HOURS_TO_DELETE = 4;
@@ -19,7 +20,7 @@ export async function handleScheduled(
 	const { success, error } = await db.deleteOldEmails(env.D1, cutoffTimestamp);
 
 	if (success) {
-		console.log("Email cleanup completed successfully.");
+		logInfo("Email cleanup completed successfully.");
 		ctx.waitUntil(sendMessage("Email cleanup completed successfully.", env));
 	} else {
 		throw new Error(`Email cleanup failed: ${error}`);

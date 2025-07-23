@@ -1,6 +1,8 @@
+import { logInfo } from "./logger";
+
 export async function sendMessage(text: string, env: CloudflareBindings) {
 	if (!env.TELEGRAM_LOG_ENABLE || !env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {
-		console.log("Telegram logging is disabled.");
+		logInfo("Telegram logging is disabled.");
 	}
 
 	const url = `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`;
