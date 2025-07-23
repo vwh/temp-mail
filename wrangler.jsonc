@@ -25,7 +25,10 @@
 		}
 	],
 	"triggers": {
-		"crons": ["0 * * * *"]
+		"crons": ["0 */5 * * *", "0 0 * * *"]
+	},
+	"vars": {
+		"TELEGRAM_LOG_ENABLE": true
 	},
 	"assets": { "directory": "./public/" },
 	/**

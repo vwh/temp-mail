@@ -20,3 +20,19 @@ export async function updateSenderStats(kv: KVNamespace, senderAddress: string) 
 		throwError(`Failed to get/update KV for ${senderKey}: ${error}`);
 	}
 }
+
+/**
+ * Get top senders from KV
+ */
+export async function getTopSenders(kv: KVNamespace, limit = 10) {
+	const { keys } = await kv.list({ prefix: "sender_count:", limit });
+
+	const topSenders = await Promise.all(
+		keys.map(async ({ name }) => {
+			const count = await kv.get(name);
+			return { name: name.replace("sender_count:", ""), count: parseInt(count || "0", 10) };
+		}),
+	);
+
+	return topSenders.sort((a, b) => b.count - a.count);
+}

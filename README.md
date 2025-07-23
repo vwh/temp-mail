@@ -116,6 +116,30 @@ Before you begin, ensure you have the following:
 
 ## Running the Worker
 
+### Telegram Logging (Optional)
+
+If you wish to enable Telegram logging for your worker, follow these steps:
+
+1.  **Enable Logging in `wrangler.jsonc`**: Ensure `TELEGRAM_LOG_ENABLE` is set to `true` in your `wrangler.jsonc` file under the `vars` section.
+
+2.  **Local Development (`.dev.vars`)**: For local development, create a `.dev.vars` file in your project root with your Telegram bot token and chat ID. This file is used by `bun dev`.
+
+    Example `.dev.vars`:
+    ```
+    TELEGRAM_BOT_TOKEN="8194799811:AAHyPY0jzH1HMhs3T0B5gzwR7ofMSSER3_0"
+    TELEGRAM_CHAT_ID="-1002807515366"
+    ```
+
+3.  **Production Deployment (Secrets)**: For production, you must set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` as secrets using `wrangler`. This securely stores your sensitive information with Cloudflare.
+
+    Run the following commands in your terminal and enter the respective values when prompted:
+    ```bash
+    bun wrangler secret put TELEGRAM_BOT_TOKEN
+    bun wrangler secret put TELEGRAM_CHAT_ID
+    ```
+
+
+
 ### Local Development
 
 To run the worker locally and connect to your **remote D1 database**:

@@ -31,8 +31,6 @@ export async function handleEmail(
 		text_content: textContent,
 	};
 
-	console.log(`Email received: ${emailData.from_address} -> ${emailData.to_address}`);
-
 	// Validate email data (fail fast if invalid)
 	const parsedEmail = emailSchema.parse(emailData);
 
