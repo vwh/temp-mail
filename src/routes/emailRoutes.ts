@@ -21,7 +21,9 @@ emailRoutes.get(
 		const { emailAddress } = c.req.valid("param");
 		const domain = getDomain(emailAddress);
 		if (!DOMAINS_SET.has(domain)) {
-			return c.json(ERR("Domain not supported", { supportedDomains: Array.from(DOMAINS_SET) }));
+			return c.json(
+				ERR("Domain not supported", "Error", { supportedDomains: Array.from(DOMAINS_SET) }),
+			);
 		}
 
 		const { limit, offset } = c.req.valid("query");

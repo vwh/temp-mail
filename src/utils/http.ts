@@ -11,11 +11,11 @@ export function OK(result: unknown) {
 /**
  *  Hono Error Response
  */
-export function ERR(message: string, note?: Record<string, unknown>) {
+export function ERR(message: string, name: string = "Error", note?: Record<string, unknown>) {
 	return {
 		status: false,
 		error: {
-			name: "Error",
+			name: name,
 			message: message,
 		},
 		...(note && { note }),

@@ -1,6 +1,6 @@
 import * as db from "@/database/d1";
 import * as kv from "@/database/kv";
-import { now, throwError } from "@/utils/helpers";
+import { now } from "@/utils/helpers";
 import { sendMessage } from "@/utils/telegram";
 
 const HOURS_TO_DELETE = 4;
@@ -22,7 +22,7 @@ export async function handleScheduled(
 		console.log("Email cleanup completed successfully.");
 		ctx.waitUntil(sendMessage("Email cleanup completed successfully.", env));
 	} else {
-		throwError(`Email cleanup failed: ${error}`);
+		throw new Error(`Email cleanup failed: ${error}`);
 	}
 }
 

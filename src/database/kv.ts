@@ -1,4 +1,3 @@
-import { throwError } from "@/utils/helpers";
 import { getDomain } from "@/utils/mail";
 
 /**
@@ -12,12 +11,12 @@ export async function updateSenderStats(kv: KVNamespace, senderAddress: string) 
 		const newCount = (currentCountStr ? parseInt(currentCountStr, 10) : 0) + 1;
 
 		kv.put(senderKey, newCount.toString()).catch((error) => {
-			throwError(`KV put failed for ${senderKey}: ${error}`);
+			throw new Error(`KV put failed for ${senderKey}: ${error}`);
 		});
 
 		return newCount;
 	} catch (error) {
-		throwError(`Failed to get/update KV for ${senderKey}: ${error}`);
+		throw new Error(`Failed to get/update KV for ${senderKey}: ${error}`);
 	}
 }
 

@@ -3,7 +3,7 @@ import PostalMime from "postal-mime";
 import * as db from "@/database/d1";
 import { updateSenderStats } from "@/database/kv";
 import { type Email, emailSchema } from "@/schemas/emailSchema";
-import { now, throwError } from "@/utils/helpers";
+import { now } from "@/utils/helpers";
 import { processEmailContent } from "@/utils/mail";
 
 /**
@@ -41,10 +41,10 @@ export async function handleEmail(
 	]);
 
 	if (emailResult.status === "rejected") {
-		throwError(`Failed to insert email: ${emailResult.reason}`);
+		throw new Error(`Failed to insert email: ${emailResult.reason}`);
 	}
 
 	if (senderCount.status === "rejected") {
-		throwError(`Failed to update sender stats: ${senderCount.reason}`);
+		throw new Error(`Failed to update sender stats: ${senderCount.reason}`);
 	}
 }
