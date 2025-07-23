@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "wrangler dev --remote",
     "deploy": "wrangler deploy --minify",
+    "cf-info": "bun run ./cloudflare-info/index.ts",
     "tail": "wrangler tail",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "db:create": "wrangler d1 create temp-mail-d1",

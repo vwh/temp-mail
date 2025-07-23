@@ -18,6 +18,8 @@ The API documentation is hosted at [https://api.barid.site](https://api.barid.si
         *   [KV Namespace Setup](#kv-namespace-setup)
         *   [Email Routing Setup](#email-routing-setup)
 *   [Running the Worker](#running-the-worker)
+    *   [Cloudflare Information Script (Optional)](#cloudflare-information-script-optional)
+    *   [Telegram Logging (Optional)](#telegram-logging-optional)
     *   [Local Development](#local-development)
     *   [Deployment](#deployment)
 
@@ -115,6 +117,23 @@ Before you begin, ensure you have the following:
     *   Click "Save".
 
 ## Running the Worker
+
+### Cloudflare Information Script (Optional)
+
+To check your Cloudflare Workers, D1 databases, KV namespaces, and domain information directly from your terminal, you can use the `cf-info` script.
+
+1.  **Configure API Credentials**: Add your Cloudflare Account ID and an API Token with appropriate permissions (e.g., `Zone:Read`, `Worker Scripts:Read`, `D1:Read`, `KV Storage:Read`, `Zone:Email:Read`) to your `.dev.vars` file.
+
+    Example `.dev.vars` additions:
+    ```
+    CLOUDFLARE_ACCOUNT_ID="YOUR_CLOUDFLARE_ACCOUNT_ID"
+    CLOUDFLARE_API_TOKEN="YOUR_CLOUDFLARE_API_TOKEN"
+    ```
+
+2.  **Run the Script**:
+    ```bash
+    bun run cf-info
+    ```
 
 ### Telegram Logging (Optional)
 

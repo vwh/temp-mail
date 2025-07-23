@@ -62,7 +62,7 @@ emailRoutes.delete("/inbox/:emailId", zValidator("param", emailIdParamSchema), a
 
 // GET /domains | Show a list of supported email domains
 emailRoutes.get("/domains", async (c) => {
-	c.header('Cache-Control', 'public, max-age=3600');
+	c.header("Cache-Control", "public, max-age=3600");
 	return c.json(OK(Array.from(DOMAINS_SET)));
 });
 
