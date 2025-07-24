@@ -1,3 +1,5 @@
 import { cors } from "hono/cors";
 
-export const corsMiddleware = cors();
+const corsMiddleware = cors();
+
+export default corsMiddleware;

@@ -4,7 +4,7 @@ import { Scalar } from "@scalar/hono-api-reference";
 import emailRoutes from "@/routes/emailRoutes";
 import { logError } from "@/utils/logger";
 import { DOMAINS_SET } from "./config/domains";
-import { corsMiddleware } from "./middlewares/cors";
+import corsMiddleware from "./middlewares/cors";
 import { ERR, OK } from "./utils/http";
 
 const app = new OpenAPIHono<{ Bindings: CloudflareBindings }>();

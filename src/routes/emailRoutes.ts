@@ -10,23 +10,16 @@ import {
 } from "@/schemas/emails/routeDefinitions";
 import { ERR, OK } from "@/utils/http";
 import { getDomain } from "@/utils/mail";
+import validateDomain from "@/middlewares/validateDomain";
 
 const emailRoutes = new OpenAPIHono<{ Bindings: CloudflareBindings }>();
+
+emailRoutes.use("/emails/{emailAddress}", validateDomain);
 
 // GET /emails/{emailAddress}
 // @ts-ignore - Ignoring OpenAPI type mismatch for utility functions
 emailRoutes.openapi(getEmailsRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
-	const domain = getDomain(emailAddress);
-
-	if (!DOMAINS_SET.has(domain)) {
-		return c.json(
-			ERR("Domain not supported", "DomainError", {
-				supportedDomains: Array.from(DOMAINS_SET),
-			}),
-			404,
-		);
-	}
 
 	const { limit, offset } = c.req.valid("query");
 	const results = await db.getEmailsByRecipient(c.env.D1, emailAddress, limit, offset);
