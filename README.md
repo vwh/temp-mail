@@ -145,8 +145,8 @@ If you wish to enable Telegram logging for your worker, follow these steps:
 
     Example `.dev.vars`:
     ```
-    TELEGRAM_BOT_TOKEN="8194799811:AAHyPY0jzH1HMhs3T0B5gzwR7ofMSSER3_0"
-    TELEGRAM_CHAT_ID="-1002807515366"
+    TELEGRAM_BOT_TOKEN="YOUR_TELEGRAM_BOT_TOKEN"
+    TELEGRAM_CHAT_ID="YOUR_TELEGRAM_CHAT_ID"
     ```
 
 3.  **Production Deployment (Secrets)**: For production, you must set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` as secrets using `wrangler`. This securely stores your sensitive information with Cloudflare.
@@ -161,7 +161,7 @@ If you wish to enable Telegram logging for your worker, follow these steps:
 
 ### Local Development
 
-To run the worker locally and connect to your **remote D1 database**:
+To run the worker locally:
 
 ```bash
 bun run dev
