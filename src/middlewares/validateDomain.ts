@@ -11,6 +11,7 @@ const validateDomain = async (c: Context, next: () => Promise<void>) => {
 
 	if (emailAddress) {
 		const domain = getDomain(emailAddress);
+
 		if (!DOMAINS_SET.has(domain)) {
 			return c.json(
 				ERR("Domain not supported", "DomainError", {

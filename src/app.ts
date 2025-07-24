@@ -27,6 +27,7 @@ app.get("/health", async (c) => {
 	try {
 		await c.env.D1.prepare("SELECT 1").run();
 		await c.env.KV.list({ limit: 1 });
+
 		return c.json(
 			OK({
 				worker: "connected",
@@ -101,7 +102,7 @@ ${Array.from(DOMAINS_SET).join("\n- ")}
 		},
 	],
 	"x-repository": "https://github.com/vwh/temp-mail",
-    "x-issues": "https://github.com/vwh/temp-mail/issues",
+	"x-issues": "https://github.com/vwh/temp-mail/issues",
 });
 
 // Swagger UI - Traditional documentation
