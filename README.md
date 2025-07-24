@@ -2,9 +2,9 @@
 
 Cloudflare Worker that acts as a temporary email inbox.
 
-## API Documentation
+**API documentation:** [https://api.barid.site](https://api.barid.site)
 
-The API documentation is hosted at [https://api.barid.site](https://api.barid.site).
+AI-made web client: [https://web.barid.site](https://web.barid.site)
 
 ## Table of Contents
 
