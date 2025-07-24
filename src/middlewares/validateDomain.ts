@@ -3,6 +3,9 @@ import { DOMAINS_SET } from "@/config/domains";
 import { ERR } from "@/utils/http";
 import { getDomain } from "@/utils/mail";
 
+/**
+ * Middleware to validate domain
+ */
 const validateDomain = async (c: Context, next: () => Promise<void>) => {
 	const emailAddress = c.req.param("emailAddress");
 

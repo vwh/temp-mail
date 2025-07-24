@@ -21,6 +21,7 @@ app.onError((err, c) => {
 // --- Routes ---
 // Email Routes
 app.route("/", emailRoutes);
+
 // Health Check
 app.get("/health", async (c) => {
 	try {
@@ -39,7 +40,6 @@ app.get("/health", async (c) => {
 	}
 });
 
-// --- Documentation ---
 // --- OpenAPI Documentation ---
 // OpenAPI Documentation
 app.doc("/openapi.json", {
@@ -98,8 +98,10 @@ ${Array.from(DOMAINS_SET).join("\n- ")}
 		},
 	],
 });
+
 // Swagger UI - Traditional documentation
 app.get("/swagger", swaggerUI({ url: "/openapi.json" }));
+
 // Scalar - Modern documentation
 app.get(
 	"/",

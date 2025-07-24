@@ -13,8 +13,10 @@ import { OK } from "@/utils/http";
 
 const emailRoutes = new OpenAPIHono<{ Bindings: CloudflareBindings }>();
 
+// --- Middlewares ---
 emailRoutes.use("/emails/:emailAddress", validateDomain);
 
+// --- Routes ---
 // GET /emails/{emailAddress}
 // @ts-ignore - Ignoring OpenAPI type mismatch for utility functions
 emailRoutes.openapi(getEmailsRoute, async (c) => {
