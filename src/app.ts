@@ -67,6 +67,9 @@ A simple and fast temporary email service that allows you to receive emails with
 ## Supported Domains
 This API currently supports the following email domains:
 ${Array.from(DOMAINS_SET).join("\n- ")}
+
+**Repository**: [github.com/vwh/temp-mail](https://github.com/vwh/temp-mail)  
+**Issues**: [Report bugs or request features](https://github.com/vwh/temp-mail/issues)
 `,
 		contact: {
 			name: "API Support",
@@ -97,6 +100,8 @@ ${Array.from(DOMAINS_SET).join("\n- ")}
 			description: "Get information about supported email domains",
 		},
 	],
+	"x-repository": "https://github.com/vwh/temp-mail",
+    "x-issues": "https://github.com/vwh/temp-mail/issues",
 });
 
 // Swagger UI - Traditional documentation
