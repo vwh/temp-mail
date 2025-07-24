@@ -24,7 +24,7 @@ emailRoutes.openapi(getEmailsRoute, async (c) => {
 			ERR("Domain not supported", "DomainError", {
 				supportedDomains: Array.from(DOMAINS_SET),
 			}),
-			400,
+			404,
 		);
 	}
 
