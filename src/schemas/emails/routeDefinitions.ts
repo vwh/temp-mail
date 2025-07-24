@@ -44,9 +44,9 @@ export const getEmailsRoute = createRoute({
 		},
 	},
 	tags: ["Emails"],
-	summary: "Get emails by address",
+	summary: "Get emails",
 	description:
-		"Retrieve all emails for a specific email address with pagination. Only supports specific domains.",
+		"Retrieve all emails for a specific email address with pagination.",
 });
 
 // Delete emails route
@@ -75,7 +75,7 @@ export const deleteEmailsRoute = createRoute({
 		},
 	},
 	tags: ["Emails"],
-	summary: "Delete all emails for an address",
+	summary: "Delete all emails",
 	description: "Delete all emails associated with the specified email address",
 });
 
@@ -143,8 +143,8 @@ export const deleteEmailRoute = createRoute({
 		},
 	},
 	tags: ["Inbox"],
-	summary: "Delete email by ID",
-	description: "Delete a specific email by its ID",
+	summary: "Delete email inbox",
+	description: "Delete a specific inbox by its email ID",
 });
 
 // Get domains route
@@ -163,5 +163,5 @@ export const getDomainsRoute = createRoute({
 	},
 	tags: ["Domains"],
 	summary: "Get supported domains",
-	description: "Retrieve a list of all supported email domains for temporary email addresses",
+	description: "Retrieve a list of all supported email domains",
 });
