@@ -1,5 +1,8 @@
-import { logInfo } from "./logger";
+import { logInfo } from "@/utils/logger";
 
+/**
+ * Send message to Telegram
+ */
 export async function sendMessage(text: string, env: CloudflareBindings) {
 	if (!env.TELEGRAM_LOG_ENABLE || !env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {
 		logInfo("Telegram logging is disabled.");

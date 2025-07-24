@@ -1,3 +1,6 @@
+/**
+ * Logger
+ */
 export function log(level: "info" | "error", message: string, context?: Record<string, unknown>) {
 	const logEntry = {
 		timestamp: new Date().toISOString(),
