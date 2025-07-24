@@ -4,8 +4,6 @@ import { now } from "@/utils/helpers";
 import { logInfo } from "@/utils/logger";
 import { sendMessage } from "@/utils/telegram";
 
-const HOURS_TO_DELETE = 4;
-
 /**
  * Cloudflare Scheduled Function
  * Delete emails older than 4 hours
@@ -15,7 +13,7 @@ export async function handleScheduled(
 	env: CloudflareBindings,
 	ctx: ExecutionContext,
 ) {
-	const cutoffTimestamp = now() - HOURS_TO_DELETE * 60 * 60;
+	const cutoffTimestamp = now() - env.HOURS_TO_DELETE_D1 * 60 * 60;
 
 	const { success, error } = await db.deleteOldEmails(env.D1, cutoffTimestamp);
 

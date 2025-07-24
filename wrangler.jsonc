@@ -28,7 +28,8 @@
 		"crons": ["0 */5 * * *", "0 0 * * *"]
 	},
 	"vars": {
-		"TELEGRAM_LOG_ENABLE": true
+		"TELEGRAM_LOG_ENABLE": true,
+		"HOURS_TO_DELETE_D1": 4
 	},
 	// "assets": { "directory": "./public/" },
 	/**
