@@ -1,5 +1,5 @@
 import type { D1Database } from "@cloudflare/workers-types";
-import type { Email, EmailSummary } from "@/schemas/emailSchema";
+import type { Email, EmailSummary } from "@/schemas/emails/schema";
 
 /**
  * Insert an email into the database

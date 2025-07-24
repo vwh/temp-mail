@@ -1,23 +1,16 @@
 /**
  *  Hono OK Response
  */
-export function OK(result: unknown) {
-	return {
-		status: true,
-		result: result,
-	};
-}
+export const OK = <T>(result: T) => ({
+	status: true as const,
+	result,
+});
 
 /**
  *  Hono Error Response
  */
-export function ERR(message: string, name: string = "Error", note?: Record<string, unknown>) {
-	return {
-		status: false,
-		error: {
-			name: name,
-			message: message,
-		},
-		...(note && { note }),
-	};
-}
+export const ERR = (message: string, name: string = "Error", note?: Record<string, unknown>) => ({
+	status: false as const,
+	error: { name, message },
+	...(note && { note }),
+});

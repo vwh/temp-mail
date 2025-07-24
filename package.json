@@ -21,8 +21,11 @@
     "knip": "knip"
   },
   "dependencies": {
+    "@hono/swagger-ui": "^0.5.2",
+    "@hono/zod-openapi": "^1.0.2",
     "@hono/zod-validator": "^0.7.1",
     "@paralleldrive/cuid2": "^2.2.2",
+    "@scalar/hono-api-reference": "^0.9.12",
     "hono": "^4.8.5",
     "html-to-text": "^9.0.5",
     "postal-mime": "^2.4.4",

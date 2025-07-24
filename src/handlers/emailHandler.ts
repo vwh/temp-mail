@@ -2,7 +2,7 @@ import { createId } from "@paralleldrive/cuid2";
 import PostalMime from "postal-mime";
 import * as db from "@/database/d1";
 import { updateSenderStats } from "@/database/kv";
-import { type Email, emailSchema } from "@/schemas/emailSchema";
+import { type Email, emailSchema } from "@/schemas/emails/schema";
 import { now } from "@/utils/helpers";
 import { processEmailContent } from "@/utils/mail";
 
