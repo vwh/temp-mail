@@ -2,7 +2,7 @@ import { createId } from "@paralleldrive/cuid2";
 import PostalMime from "postal-mime";
 import * as db from "@/database/d1";
 import { updateSenderStats } from "@/database/kv";
-import { type Email, emailSchema } from "@/schemas/emails/schema";
+import { emailSchema } from "@/schemas/emails/schema";
 import { now } from "@/utils/helpers";
 import { processEmailContent } from "@/utils/mail";
 
@@ -12,16 +12,15 @@ import { processEmailContent } from "@/utils/mail";
 export async function handleEmail(
 	message: ForwardableEmailMessage,
 	env: CloudflareBindings,
-	_ctx: ExecutionContext,
+	ctx: ExecutionContext,
 ) {
-	const [email, emailId] = await Promise.all([
-		PostalMime.parse(message.raw),
-		Promise.resolve(createId()),
-	]);
+	const emailId = createId();
+	const email = await PostalMime.parse(message.raw);
 
+	// Process email content
 	const { htmlContent, textContent } = processEmailContent(email.html ?? null, email.text ?? null);
 
-	const emailData: Email = {
+	const emailData = emailSchema.parse({
 		id: emailId,
 		from_address: message.from,
 		to_address: message.to,
@@ -29,22 +28,11 @@ export async function handleEmail(
 		received_at: now(),
 		html_content: htmlContent,
 		text_content: textContent,
-	};
+	});
 
-	// Validate email data (fail fast if invalid)
-	const parsedEmail = emailSchema.parse(emailData);
+	// Update sender stats
+	ctx.waitUntil(updateSenderStats(env.KV, message.from));
 
-	// Execute database insert and KV update
-	const [emailResult, senderCount] = await Promise.allSettled([
-		db.insertEmail(env.D1, parsedEmail),
-		updateSenderStats(env.KV, message.from),
-	]);
-
-	if (emailResult.status === "rejected") {
-		throw new Error(`Failed to insert email: ${emailResult.reason}`);
-	}
-
-	if (senderCount.status === "rejected") {
-		throw new Error(`Failed to update sender stats: ${senderCount.reason}`);
-	}
+	// Insert email
+	await db.insertEmail(env.D1, emailData);
 }
