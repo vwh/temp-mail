@@ -164,7 +164,7 @@ If you wish to enable Telegram logging for your worker, follow these steps:
 To run the worker locally and connect to your **remote D1 database**:
 
 ```bash
-bun dev
+bun run dev
 ```
 
 ### Deployment
@@ -172,5 +172,5 @@ bun dev
 To deploy your worker to Cloudflare:
 
 ```bash
-bun deploy
+bun run deploy
 ```
