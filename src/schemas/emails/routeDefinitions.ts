@@ -45,8 +45,7 @@ export const getEmailsRoute = createRoute({
 	},
 	tags: ["Emails"],
 	summary: "Get emails",
-	description:
-		"Retrieve all emails for a specific email address with pagination.",
+	description: "Retrieve all emails for a specific email address with pagination.",
 });
 
 // Delete emails route
