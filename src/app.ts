@@ -67,7 +67,7 @@ A simple and fast temporary email service that allows you to receive emails with
 
 ## Supported Domains
 This API currently supports the following email domains:
-${Array.from(DOMAINS_SET).join("\n- ")}
+${`\n${Array.from(DOMAINS_SET).map(domain => `- ${domain}`).join("\n")}`}
 
 **Repository**: [github.com/vwh/temp-mail](https://github.com/vwh/temp-mail)  
 **Issues**: [Report bugs or request features](https://github.com/vwh/temp-mail/issues)
