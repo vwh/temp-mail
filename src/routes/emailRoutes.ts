@@ -7,8 +7,8 @@ import {
 	deleteEmailsRoute,
 	getDomainsRoute,
 	getEmailRoute,
-	getEmailsRoute,
 	getEmailsCountRoute,
+	getEmailsRoute,
 } from "@/schemas/emails/routeDefinitions";
 import { ERR, OK } from "@/utils/http";
 
