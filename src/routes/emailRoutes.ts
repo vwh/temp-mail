@@ -1,6 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { DOMAINS_SET } from "@/config/domains";
 import * as db from "@/database/d1";
+import validateDomain from "@/middlewares/validateDomain";
 import {
 	deleteEmailRoute,
 	deleteEmailsRoute,
@@ -13,7 +14,7 @@ import { OK } from "@/utils/http";
 const emailRoutes = new OpenAPIHono<{ Bindings: CloudflareBindings }>();
 
 // --- Middlewares ---
-// emailRoutes.use("/emails/:emailAddress", validateDomain);
+emailRoutes.use("/emails/:emailAddress", validateDomain);
 
 // --- Routes ---
 // GET /emails/{emailAddress}
