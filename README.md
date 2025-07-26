@@ -10,6 +10,7 @@ AI-made web client: [https://web.barid.site](https://web.barid.site)
 
 *   [Features](#features)
 *   [Supporters](#supporters)
+*   [Community](#community-built-stuff)
 *   [Setup Guide](#setup-guide)
     *   [Prerequisites](#prerequisites)
     *   [Project Setup](#project-setup)
@@ -54,6 +55,15 @@ If you have an unused domain and would like to contribute, you can donate it by 
 
 1.  **Create a Pull Request**: Add your domain and owner information to the `config/domains.ts` file in the `src` directory.
 2.  **Nameserver Provisioning**: After your pull request, we will provide you with the nameservers to update for your domain.
+
+---
+
+## Community
+
+Here are some projects built by the community using or integrating with Temp Mail Worker:
+
+*   **Rust Library**: [doomed-neko/barid-rs](https://github.com/doomed-neko/barid-rs)
+*   **Go Library**: [blockton/barid](https://github.com/blockton/barid)
 
 ---
 
