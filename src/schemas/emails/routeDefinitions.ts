@@ -133,6 +133,14 @@ export const deleteEmailRoute = createRoute({
 			},
 			description: "Successfully deleted the email",
 		},
+		404: {
+			content: {
+				"application/json": {
+					schema: notFoundErrorResponseSchema,
+				},
+			},
+			description: "Email not found",
+		},
 		400: {
 			content: {
 				"application/json": {

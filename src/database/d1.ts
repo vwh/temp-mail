@@ -78,9 +78,9 @@ export async function deleteEmailsByRecipient(db: D1Database, emailAddress: stri
  * Delete an email by ID
  */
 export async function deleteEmailById(db: D1Database, emailId: string) {
-	const { success, error } = await db
+	const { success, error, meta } = await db
 		.prepare("DELETE FROM emails WHERE id = ?")
 		.bind(emailId)
 		.run();
-	return { success, error };
+	return { success, error, meta };
 }
