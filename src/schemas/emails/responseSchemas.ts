@@ -198,3 +198,19 @@ export const notFoundErrorResponseSchema = z
 		}),
 	})
 	.openapi("NotFoundErrorResponse");
+
+// Emails count success response schema
+export const emailsCountSuccessResponseSchema = z
+	.object({
+		success: z.literal(true).openapi({
+			description: "Indicates that the request was successful.",
+			example: true,
+		}),
+		result: z.object({
+			count: z.number().openapi({
+				description: "The number of emails for the specified address.",
+				example: 5,
+			}),
+		}),
+	})
+	.openapi("EmailsCountSuccessResponse");

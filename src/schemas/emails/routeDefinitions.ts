@@ -8,6 +8,7 @@ import {
 	emailListSuccessResponseSchema,
 	notFoundErrorResponseSchema,
 	validationErrorResponseSchema,
+	emailsCountSuccessResponseSchema,
 } from "./responseSchemas";
 import { emailAddressParamSchema, emailIdParamSchema, emailQuerySchema } from "./routerSchema";
 
@@ -48,6 +49,44 @@ export const getEmailsRoute = createRoute({
 	tags: ["Emails"],
 	summary: "Get emails",
 	description: "Retrieve all emails for a specific email address with pagination.",
+});
+
+// Get emails count route
+export const getEmailsCountRoute = createRoute({
+	method: "get",
+	path: "/emails/count/{emailAddress}",
+	request: {
+		params: emailAddressParamSchema,
+	},
+	responses: {
+		200: {
+			content: {
+				"application/json": {
+					schema: emailsCountSuccessResponseSchema,
+				},
+			},
+			description: "Successfully retrieved the count of emails for the specified address",
+		},
+		404: {
+			content: {
+				"application/json": {
+					schema: domainErrorResponseSchema,
+				},
+			},
+			description: "Domain not supported - returns list of supported domains",
+		},
+		400: {
+			content: {
+				"application/json": {
+					schema: validationErrorResponseSchema,
+				},
+			},
+			description: "Validation error - invalid email format",
+		},
+	},
+	tags: ["Emails"],
+	summary: "Get email count",
+	description: "Retrieve the total number of emails for a specific email address.",
 });
 
 // Delete emails route

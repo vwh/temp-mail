@@ -8,6 +8,7 @@ import {
 	getDomainsRoute,
 	getEmailRoute,
 	getEmailsRoute,
+	getEmailsCountRoute,
 } from "@/schemas/emails/routeDefinitions";
 import { ERR, OK } from "@/utils/http";
 
@@ -15,6 +16,7 @@ const emailRoutes = new OpenAPIHono<{ Bindings: CloudflareBindings }>();
 
 // --- Middlewares ---
 emailRoutes.use("/emails/:emailAddress", validateDomain);
+emailRoutes.use("/emails/count/:emailAddress", validateDomain);
 
 // --- Routes ---
 // GET /emails/{emailAddress}
@@ -26,6 +28,16 @@ emailRoutes.openapi(getEmailsRoute, async (c) => {
 	const results = await db.getEmailsByRecipient(c.env.D1, emailAddress, limit, offset);
 
 	return c.json(OK(results));
+});
+
+// GET /emails/count/{emailAddress}
+// @ts-ignore - Ignoring OpenAPI type mismatch for utility functions
+emailRoutes.openapi(getEmailsCountRoute, async (c) => {
+	const { emailAddress } = c.req.valid("param");
+
+	const count = await db.countEmailsByRecipient(c.env.D1, emailAddress);
+
+	return c.json(OK({ count }));
 });
 
 // DELETE /emails/{emailAddress}

@@ -84,3 +84,14 @@ export async function deleteEmailById(db: D1Database, emailId: string) {
 		.run();
 	return { success, error, meta };
 }
+
+/**
+ * Count emails by recipient email address
+ */
+export async function countEmailsByRecipient(db: D1Database, emailAddress: string) {
+	const result = await db
+		.prepare("SELECT count(*) as count FROM emails WHERE to_address = ?")
+		.bind(emailAddress)
+		.first<{ count: number }>();
+	return result?.count || 0;
+}
