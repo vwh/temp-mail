@@ -34,5 +34,9 @@ export async function handleEmail(
 	ctx.waitUntil(updateSenderStats(env.KV, message.from));
 
 	// Insert email
-	await db.insertEmail(env.D1, emailData);
+	const { success, error } = await db.insertEmail(env.D1, emailData);
+
+	if (!success) {
+		throw new Error(`Failed to insert email: ${error}`);
+	}
 }

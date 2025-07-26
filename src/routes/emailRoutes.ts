@@ -23,10 +23,11 @@ emailRoutes.use("/emails/count/:emailAddress", validateDomain);
 // @ts-ignore - Ignoring OpenAPI type mismatch for utility functions
 emailRoutes.openapi(getEmailsRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
-
 	const { limit, offset } = c.req.valid("query");
-	const results = await db.getEmailsByRecipient(c.env.D1, emailAddress, limit, offset);
 
+	const { results, error } = await db.getEmailsByRecipient(c.env.D1, emailAddress, limit, offset);
+
+	if (error) return c.json(ERR(error.message, "D1Error"), 500);
 	return c.json(OK(results));
 });
 
@@ -35,8 +36,9 @@ emailRoutes.openapi(getEmailsRoute, async (c) => {
 emailRoutes.openapi(getEmailsCountRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
 
-	const count = await db.countEmailsByRecipient(c.env.D1, emailAddress);
+	const { count, error } = await db.countEmailsByRecipient(c.env.D1, emailAddress);
 
+	if (error) return c.json(ERR(error.message, "D1Error"), 500);
 	return c.json(OK({ count }));
 });
 
@@ -45,16 +47,21 @@ emailRoutes.openapi(getEmailsCountRoute, async (c) => {
 emailRoutes.openapi(deleteEmailsRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
 
-	const { meta } = await db.deleteEmailsByRecipient(c.env.D1, emailAddress);
-	return c.json(OK({ message: "Emails deleted successfully", deleted_count: meta.changes }));
+	const { meta, error } = await db.deleteEmailsByRecipient(c.env.D1, emailAddress);
+
+	if (error) return c.json(ERR(error.message, "D1Error"), 500);
+	if (meta && meta.changes === 0)
+		return c.json(ERR("No emails found for deletion", "NotFound"), 404);
+	return c.json(OK({ message: "Emails deleted successfully", deleted_count: meta?.changes }));
 });
 
 // GET /inbox/{emailId}
 // @ts-ignore - Ignoring OpenAPI type mismatch for utility functions
 emailRoutes.openapi(getEmailRoute, async (c) => {
 	const { emailId } = c.req.valid("param");
-	const result = await db.getEmailById(c.env.D1, emailId);
+	const { result, error } = await db.getEmailById(c.env.D1, emailId);
 
+	if (error) return c.json(ERR(error.message, "D1Error"), 500);
 	if (!result) return c.json(ERR("Email not found", "NotFound"), 404);
 	return c.json(OK(result));
 });
@@ -63,9 +70,10 @@ emailRoutes.openapi(getEmailRoute, async (c) => {
 // @ts-ignore - Ignoring OpenAPI type mismatch for utility functions
 emailRoutes.openapi(deleteEmailRoute, async (c) => {
 	const { emailId } = c.req.valid("param");
-	const { meta } = await db.deleteEmailById(c.env.D1, emailId);
+	const { meta, error } = await db.deleteEmailById(c.env.D1, emailId);
 
-	if (meta.changes === 0) return c.json(ERR("Email not found", "NotFound"), 404);
+	if (error) return c.json(ERR(error.message, "D1Error"), 500);
+	if (meta && meta.changes === 0) return c.json(ERR("Email not found", "NotFound"), 404);
 	return c.json(OK({ message: "Email deleted successfully" }));
 });
 
