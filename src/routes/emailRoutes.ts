@@ -53,7 +53,7 @@ emailRoutes.openapi(deleteEmailRoute, async (c) => {
 	const { emailId } = c.req.valid("param");
 	const { meta } = await db.deleteEmailById(c.env.D1, emailId);
 
-	if ( meta.changes === 0) return c.json(ERR("Email not found", "NotFound"), 404);
+	if (meta.changes === 0) return c.json(ERR("Email not found", "NotFound"), 404);
 	return c.json(OK({ message: "Email deleted successfully" }));
 });
 
