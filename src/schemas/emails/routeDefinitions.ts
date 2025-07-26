@@ -1,6 +1,7 @@
 import { createRoute } from "@hono/zod-openapi";
 import {
-	deleteSuccessResponseSchema,
+	emailDeleteSuccessResponseSchema,
+	emailsDeleteSuccessResponseSchema,
 	domainErrorResponseSchema,
 	domainsSuccessResponseSchema,
 	emailDetailSuccessResponseSchema,
@@ -60,7 +61,7 @@ export const deleteEmailsRoute = createRoute({
 		200: {
 			content: {
 				"application/json": {
-					schema: deleteSuccessResponseSchema,
+					schema: emailsDeleteSuccessResponseSchema,
 				},
 			},
 			description: "Successfully deleted all emails for the address",
@@ -128,7 +129,7 @@ export const deleteEmailRoute = createRoute({
 		200: {
 			content: {
 				"application/json": {
-					schema: deleteSuccessResponseSchema,
+					schema: emailDeleteSuccessResponseSchema,
 				},
 			},
 			description: "Successfully deleted the email",

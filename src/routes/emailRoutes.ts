@@ -33,8 +33,8 @@ emailRoutes.openapi(getEmailsRoute, async (c) => {
 emailRoutes.openapi(deleteEmailsRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
 
-	await db.deleteEmailsByRecipient(c.env.D1, emailAddress);
-	return c.json(OK({ message: "Emails deleted successfully" }));
+	const { meta } = await db.deleteEmailsByRecipient(c.env.D1, emailAddress);
+	return c.json(OK({ message: "Emails deleted successfully", deleted_count: meta.changes }));
 });
 
 // GET /inbox/{emailId}

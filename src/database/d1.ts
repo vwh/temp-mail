@@ -56,22 +56,22 @@ export async function getEmailById(db: D1Database, emailId: string) {
  * Delete emails older than a specific timestamp
  */
 export async function deleteOldEmails(db: D1Database, timestamp: number) {
-	const { success, error } = await db
+	const { success, error, meta } = await db
 		.prepare("DELETE FROM emails WHERE received_at < ?")
 		.bind(timestamp)
 		.run();
-	return { success, error };
+	return { success, error, meta };
 }
 
 /**
  * Delete emails by recipient email address
  */
 export async function deleteEmailsByRecipient(db: D1Database, emailAddress: string) {
-	const { success, error } = await db
+	const { success, error, meta } = await db
 		.prepare("DELETE FROM emails WHERE to_address = ?")
 		.bind(emailAddress)
 		.run();
-	return { success, error };
+	return { success, error, meta };
 }
 
 /**

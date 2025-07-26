@@ -11,7 +11,7 @@ export const emailAddressParamSchema = z.object({
 				in: "path",
 			},
 			example: "user@example.com",
-			description: "Email address to query",
+			description: "The email address to query for.",
 		}),
 });
 
@@ -26,7 +26,7 @@ export const emailIdParamSchema = z.object({
 				in: "path",
 			},
 			example: "usm2sw0qfv9a5ku9z4xmh8og",
-			description: "Unique email identifier",
+			description: "The unique identifier for the email.",
 		}),
 });
 
@@ -34,10 +34,10 @@ export const emailIdParamSchema = z.object({
 export const emailQuerySchema = z.object({
 	limit: z.coerce.number().min(1).max(100).optional().default(10).openapi({
 		example: 20,
-		description: "Number of emails to return",
+		description: "The maximum number of emails to return.",
 	}),
 	offset: z.coerce.number().min(0).optional().default(0).openapi({
 		example: 0,
-		description: "Number of emails to skip",
+		description: "The number of emails to skip before starting to return results.",
 	}),
 });
