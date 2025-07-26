@@ -23,8 +23,8 @@ A simple and fast temporary email service that allows you to receive emails with
 - Automatic cleanup
 
 ## Response Format
-- **Success responses** include \`status: true\` and a \`result\` field
-- **Error responses** include \`status: false\` and an \`error\` object
+- **Success responses** include \`success: true\` and a \`result\` field
+- **Error responses** include \`success: false\` and an \`error\` object
 - **Validation errors** include \`success: false\` and detailed error information
 
 ## Supported Domains

@@ -5,7 +5,7 @@ import { emailSchema } from "./schema";
 // Generic success response schema
 export const successResponseSchema = z
 	.object({
-		status: z.boolean(),
+		success: z.boolean(),
 		result: z.any(),
 	})
 	.openapi("SuccessResponse");
@@ -13,7 +13,7 @@ export const successResponseSchema = z
 // Generic error response schema
 export const errorResponseSchema = z
 	.object({
-		status: z.boolean(),
+		success: z.boolean(),
 		error: z.object({
 			name: z.string(),
 			message: z.string(),
@@ -36,7 +36,7 @@ export const validationErrorResponseSchema = z
 // Email list success response schema
 export const emailListSuccessResponseSchema = z
 	.object({
-		status: z.literal(true),
+		success: z.literal(true),
 		result: z.array(
 			z.object({
 				id: z.string().openapi({ example: "usm2sw0qfv9a5ku9z4xmh8og" }),
@@ -52,7 +52,7 @@ export const emailListSuccessResponseSchema = z
 // Email detail success response schema
 export const emailDetailSuccessResponseSchema = z
 	.object({
-		status: z.literal(true),
+		success: z.literal(true),
 		result: emailSchema,
 	})
 	.openapi("EmailDetailSuccessResponse");
@@ -60,7 +60,7 @@ export const emailDetailSuccessResponseSchema = z
 // Delete success response schema
 export const deleteSuccessResponseSchema = z
 	.object({
-		status: z.literal(true),
+		success: z.literal(true),
 		result: z.object({
 			message: z.string(),
 		}),
@@ -70,7 +70,7 @@ export const deleteSuccessResponseSchema = z
 // Domains success response schema
 export const domainsSuccessResponseSchema = z
 	.object({
-		status: z.literal(true),
+		success: z.literal(true),
 		result: z.array(z.string()).openapi({
 			example: Array.from(DOMAINS_SET),
 		}),
@@ -80,13 +80,13 @@ export const domainsSuccessResponseSchema = z
 // Domain error response schema with required note
 export const domainErrorResponseSchema = z
 	.object({
-		status: z.literal(false),
+		success: z.literal(false),
 		error: z.object({
 			name: z.literal("DomainError"),
 			message: z.literal("Domain not supported"),
 		}),
 		note: z.object({
-			supportedDomains: z.array(z.string()),
+			supported_domains: z.array(z.string()),
 		}),
 	})
 	.openapi("DomainErrorResponse");
@@ -94,7 +94,7 @@ export const domainErrorResponseSchema = z
 // Not found error response schema
 export const notFoundErrorResponseSchema = z
 	.object({
-		status: z.literal(false),
+		success: z.literal(false),
 		error: z.object({
 			name: z.literal("Error"),
 			message: z.literal("Email not found"),

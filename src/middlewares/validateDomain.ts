@@ -15,7 +15,7 @@ const validateDomain = async (c: Context, next: () => Promise<void>) => {
 		if (!DOMAINS_SET.has(domain)) {
 			return c.json(
 				ERR("Domain not supported", "DomainError", {
-					supportedDomains: Array.from(DOMAINS_SET),
+					supported_domains: Array.from(DOMAINS_SET),
 				}),
 				404,
 			);
