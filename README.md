@@ -62,7 +62,7 @@ If you have an unused domain and would like to contribute, you can donate it by 
 
 Here are some projects built by the community using or integrating with Temp Mail Worker:
 
-*   **Rust Library**: [doomed-neko/barid-rs](https://github.com/doomed-neko/barid-rs)
+*   **Rust Library**: [doomed-neko/tmapi](https://github.com/doomed-neko/tmapi/)
 *   **Go Library**: [blockton/barid](https://github.com/blockton/barid)
 
 ---
@@ -166,8 +166,6 @@ If you wish to enable Telegram logging for your worker, follow these steps:
     bun wrangler secret put TELEGRAM_BOT_TOKEN
     bun wrangler secret put TELEGRAM_CHAT_ID
     ```
-
-
 
 ### Local Development
 
