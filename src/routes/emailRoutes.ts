@@ -9,7 +9,7 @@ import {
 	getEmailRoute,
 	getEmailsRoute,
 } from "@/schemas/emails/routeDefinitions";
-import { OK } from "@/utils/http";
+import { ERR, OK } from "@/utils/http";
 
 const emailRoutes = new OpenAPIHono<{ Bindings: CloudflareBindings }>();
 
@@ -43,7 +43,7 @@ emailRoutes.openapi(getEmailRoute, async (c) => {
 	const { emailId } = c.req.valid("param");
 	const result = await db.getEmailById(c.env.D1, emailId);
 
-	if (!result) return c.notFound();
+	if (!result) return c.json(ERR("Email not found", "NotFound"), 404);
 	return c.json(OK(result));
 });
 

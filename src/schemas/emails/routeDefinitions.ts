@@ -5,6 +5,7 @@ import {
 	domainsSuccessResponseSchema,
 	emailDetailSuccessResponseSchema,
 	emailListSuccessResponseSchema,
+	notFoundErrorResponseSchema,
 	validationErrorResponseSchema,
 } from "./responseSchemas";
 import { emailAddressParamSchema, emailIdParamSchema, emailQuerySchema } from "./routerSchema";
@@ -97,7 +98,7 @@ export const getEmailRoute = createRoute({
 		404: {
 			content: {
 				"application/json": {
-					schema: domainErrorResponseSchema,
+					schema: notFoundErrorResponseSchema,
 				},
 			},
 			description: "Email not found",

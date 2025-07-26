@@ -96,7 +96,7 @@ export const notFoundErrorResponseSchema = z
 	.object({
 		success: z.literal(false),
 		error: z.object({
-			name: z.literal("Error"),
+			name: z.literal("NotFound"),
 			message: z.literal("Email not found"),
 		}),
 	})
