@@ -47,7 +47,6 @@ A big thank you to the individuals who have donated domains to support this proj
 | `wael.fun` | [blockton](https://github.com/blockton) |
 | `tawbah.site` | [HprideH](https://github.com/HprideH) |
 | `kuruptd.ink` | [HprideH](https://github.com/HprideH) |
-| `hexworld.cc` | [superhexa](https://github.com/superhexa) |
 
 ### How to Donate a Domain
 
