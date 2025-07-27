@@ -64,6 +64,8 @@ Here are some projects built by the community using or integrating with Temp Mai
 
 *   **Rust Library**: [doomed-neko/tmapi](https://github.com/doomed-neko/tmapi/)
 *   **Go Library**: [blockton/barid](https://github.com/blockton/barid)
+*   **Python Library**: [superhexa/barid-client](https://github.com/superhexa/barid-client)
+*   **CLI App**: [doomed-neko/tmcli](https://github.com/doomed-neko/tmcli)
 
 ---
 
