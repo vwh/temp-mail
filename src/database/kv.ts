@@ -24,14 +24,33 @@ export async function updateSenderStats(kv: KVNamespace, senderAddress: string) 
  * Get top senders from KV
  */
 export async function getTopSenders(kv: KVNamespace, limit = 10) {
-	const { keys } = await kv.list({ prefix: "sender_count:", limit });
+	const allKeys = [];
+	let cursor: string | undefined;
 
-	const topSenders = await Promise.all(
-		keys.map(async ({ name }) => {
+	while (true) {
+		const page = await kv.list({
+			prefix: "sender_count:",
+			cursor,
+		});
+
+		allKeys.push(...page.keys);
+
+		if (page.list_complete) {
+			break;
+		}
+
+		cursor = page.cursor;
+	}
+
+	const allSenders = await Promise.all(
+		allKeys.map(async ({ name }) => {
 			const count = await kv.get(name);
-			return { name: name.replace("sender_count:", ""), count: parseInt(count || "0", 10) };
+			return {
+				name: name.replace("sender_count:", ""),
+				count: parseInt(count || "0", 10),
+			};
 		}),
 	);
 
-	return topSenders.sort((a, b) => b.count - a.count);
+	return allSenders.sort((a, b) => b.count - a.count).slice(0, limit);
 }
