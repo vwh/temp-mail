@@ -50,7 +50,14 @@ export async function getEmailsByRecipient(
 			)
 			.bind(emailAddress, limit, offset)
 			.all();
-		return { results: results as EmailSummary[], error: undefined };
+
+		// Convert SQLite boolean integers to proper booleans
+		const convertedResults = results.map((row: any) => ({
+			...row,
+			has_attachments: Boolean(row.has_attachments),
+		}));
+
+		return { results: convertedResults as EmailSummary[], error: undefined };
 	} catch (e: unknown) {
 		const error = e instanceof Error ? e : new Error(String(e));
 		return { results: [], error: error };
@@ -63,7 +70,17 @@ export async function getEmailsByRecipient(
 export async function getEmailById(db: D1Database, emailId: string) {
 	try {
 		const emailResult = await db.prepare("SELECT * FROM emails WHERE id = ?").bind(emailId).first();
-		return { result: emailResult as Email | null, error: undefined };
+
+		if (emailResult) {
+			// Convert SQLite boolean integers to proper booleans
+			const convertedResult = {
+				...emailResult,
+				has_attachments: Boolean(emailResult.has_attachments),
+			};
+			return { result: convertedResult as Email, error: undefined };
+		}
+
+		return { result: null, error: undefined };
 	} catch (e: unknown) {
 		const error = e instanceof Error ? e : new Error(String(e));
 		return { result: null, error: error };
