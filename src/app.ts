@@ -1,4 +1,5 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
+import attachmentRoutes from "@/routes/attachmentRoutes";
 import emailRoutes from "@/routes/emailRoutes";
 import { setupDocumentation } from "@/utils/docs";
 import { logError } from "@/utils/logger";
@@ -20,6 +21,8 @@ app.onError((err, c) => {
 // --- Routes ---
 // Email Routes
 app.route("/", emailRoutes);
+// Attachment Routes
+app.route("/", attachmentRoutes);
 // Health Check
 app.route("/", healthRoutes);
 

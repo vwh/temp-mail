@@ -17,6 +17,7 @@ AI-made web client: [https://web.barid.site](https://web.barid.site)
     *   [Cloudflare Configuration](#cloudflare-configuration)
         *   [D1 Database Setup](#d1-database-setup)
         *   [KV Namespace Setup](#kv-namespace-setup)
+        *   [R2 Bucket Setup](#r2-bucket-setup)
         *   [Email Routing Setup](#email-routing-setup)
 *   [Running the Worker](#running-the-worker)
     *   [Cloudflare Information Script (Optional)](#cloudflare-information-script-optional)
@@ -30,8 +31,10 @@ AI-made web client: [https://web.barid.site](https://web.barid.site)
 
 *   Receives emails via Cloudflare Email Routing.
 *   Stores email data in a Cloudflare D1 database.
-*   Provides API endpoints to the emails
-*   Automatically cleans up old emails
+*   **Attachment Support**: Stores email attachments up to 50MB in Cloudflare R2.
+*   Provides comprehensive API endpoints for emails and attachments.
+*   Automatically cleans up old emails and attachments.
+*   Supports multiple file types including documents, images, and archives.
 
 ## Supporters
 
@@ -117,6 +120,17 @@ Before you begin, ensure you have the following:
 2.  **Copy the `id`**: From the output of the above command.
 3.  **Update `wrangler.jsonc`**: Open `wrangler.jsonc` and replace `id` and `preview_id` with the `id` you just copied.
 
+#### R2 Bucket Setup
+
+1.  **Create the R2 Bucket**:
+    ```bash
+    bun run r2:create
+    ```
+2.  **Create Preview Bucket** (for development):
+    ```bash
+    bun run r2:create-preview
+    ```
+
 #### Email Routing Setup
 
 1.  **Go to your Cloudflare Dashboard**: Select your domain (`example.com`).
@@ -183,3 +197,66 @@ To deploy your worker to Cloudflare:
 ```bash
 bun run deploy
 ```
+
+## Available Scripts
+
+### Development & Deployment
+- `bun run dev` - Start local development server
+- `bun run deploy` - Deploy to Cloudflare Workers
+- `bun run tail` - View live logs from deployed worker
+
+### Database Management
+- `bun run db:create` - Create D1 database
+- `bun run db:tables` - Apply database schema
+- `bun run db:indexes` - Apply database indexes
+- `bun run db:migrate-attachments` - Add attachment support to existing database
+
+### Storage Setup
+- `bun run kv:create` - Create KV namespace
+- `bun run r2:create` - Create R2 bucket for attachments
+- `bun run r2:create-preview` - Create R2 preview bucket
+
+### Code Quality
+- `bun run check` - Run all linting and formatting checks
+- `bun run lint` - Run ESLint
+- `bun run lint:fix` - Fix ESLint issues
+- `bun run format` - Format code with Prettier
+- `bun run tsc` - Run TypeScript compiler
+
+### Utilities
+- `bun run cf-info` - Display Cloudflare account information
+- `bun run cf-typegen` - Generate TypeScript types for Cloudflare bindings
+
+## API Endpoints
+
+### Email Endpoints
+
+- `GET /emails/{emailAddress}` - Get emails for a specific address
+- `GET /emails/count/{emailAddress}` - Get email count for a specific address
+- `GET /inbox/{emailId}` - Get a specific email by ID
+- `DELETE /emails/{emailAddress}` - Delete all emails for a specific address
+- `DELETE /inbox/{emailId}` - Delete a specific email by ID
+- `GET /domains` - Get list of supported domains
+
+### Attachment Endpoints
+
+- `GET /emails/{emailAddress}/attachments` - Get all attachments for emails sent to a specific address
+- `GET /inbox/{emailId}/attachments` - Get attachments for a specific email
+- `GET /attachments/{attachmentId}` - Download a specific attachment
+- `DELETE /attachments/{attachmentId}` - Delete a specific attachment
+
+### Attachment Features
+
+- **File Size Limit**: Up to 50MB per attachment
+- **File Count Limit**: Up to 10 attachments per email
+- **Supported File Types**:
+  - **Images**: JPEG, PNG, GIF, WebP, SVG
+  - **Documents**: PDF, TXT, CSV, Word, Excel, PowerPoint
+  - **Archives**: ZIP, RAR, 7Z
+  - **Other**: JSON, XML
+
+### Health Check
+
+- `GET /health` - Service health status
+
+For complete API documentation with examples, visit: [https://api.barid.site](https://api.barid.site)

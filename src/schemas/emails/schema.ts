@@ -31,6 +31,14 @@ export const emailSchema = z
 			description: "The plain text content of the email.",
 			example: "Hello world",
 		}),
+		has_attachments: z.boolean().default(false).openapi({
+			description: "Whether the email has attachments.",
+			example: true,
+		}),
+		attachment_count: z.number().default(0).openapi({
+			description: "The number of attachments in the email.",
+			example: 2,
+		}),
 	})
 	.openapi("Email");
 
@@ -58,6 +66,14 @@ const emailSummarySchema = z
 		received_at: z.number().openapi({
 			description: "The timestamp when the email was received (Unix epoch).",
 			example: 1753317948,
+		}),
+		has_attachments: z.boolean().default(false).openapi({
+			description: "Whether the email has attachments.",
+			example: true,
+		}),
+		attachment_count: z.number().default(0).openapi({
+			description: "The number of attachments in the email.",
+			example: 2,
 		}),
 	})
 	.openapi("EmailSummary");

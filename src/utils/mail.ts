@@ -29,7 +29,7 @@ function sanitizeHtml(html: string): string {
 function htmlToText(html: string): string | null {
 	try {
 		// Check size limit before processing
-		if (Buffer.byteLength(html, "utf8") > HTML_PROCESSING.MAX_CONVERSION_SIZE) {
+		if (new TextEncoder().encode(html).byteLength > HTML_PROCESSING.MAX_CONVERSION_SIZE) {
 			console.warn("HTML content too large for conversion, truncating");
 			html = html.substring(0, HTML_PROCESSING.MAX_CONVERSION_SIZE);
 		}

@@ -24,6 +24,13 @@
 			"preview_id": "73f6b6ffe8e94b5db08ed815d92b44e6" // Replace with the ID from `bun run kv:create`
 		}
 	],
+	"r2_buckets": [
+		{
+			"binding": "R2",
+			"bucket_name": "temp-mail-attachments",
+			"preview_bucket_name": "temp-mail-attachments-preview"
+		}
+	],
 	"triggers": {
 		"crons": ["0 */4 * * *", "0 */5 * * *"]
 	},

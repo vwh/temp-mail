@@ -11,6 +11,8 @@
     "db:tables": "wrangler d1 execute temp-mail-d1 --file ./sql/schema.sql --remote",
     "db:indexes": "wrangler d1 execute temp-mail-d1 --file ./sql/indexes.sql --remote",
     "kv:create": "wrangler kv namespace create temp-mail-kv --preview",
+    "r2:create": "wrangler r2 bucket create temp-mail-attachments",
+    "r2:create-preview": "wrangler r2 bucket create temp-mail-attachments-preview",
     "lint": "biome lint ./src",
     "lint:fix": "biome lint --write --unsafe ./src",
     "format": "biome format --write ./src",
