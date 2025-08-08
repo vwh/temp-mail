@@ -1,4 +1,5 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
+import { CACHE } from "@/config/constants";
 import { DOMAINS_SET } from "@/config/domains";
 import * as db from "@/database/d1";
 import validateDomain from "@/middlewares/validateDomain";
@@ -20,7 +21,7 @@ emailRoutes.use("/emails/count/:emailAddress", validateDomain);
 
 // --- Routes ---
 // GET /emails/{emailAddress}
-// @ts-ignore - Ignoring OpenAPI type mismatch for utility functions
+// @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 emailRoutes.openapi(getEmailsRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
 	const { limit, offset } = c.req.valid("query");
@@ -32,7 +33,7 @@ emailRoutes.openapi(getEmailsRoute, async (c) => {
 });
 
 // GET /emails/count/{emailAddress}
-// @ts-ignore - Ignoring OpenAPI type mismatch for utility functions
+// @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 emailRoutes.openapi(getEmailsCountRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
 
@@ -43,7 +44,7 @@ emailRoutes.openapi(getEmailsCountRoute, async (c) => {
 });
 
 // DELETE /emails/{emailAddress}
-// @ts-ignore - Ignoring OpenAPI type mismatch for utility functions
+// @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 emailRoutes.openapi(deleteEmailsRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
 
@@ -56,7 +57,7 @@ emailRoutes.openapi(deleteEmailsRoute, async (c) => {
 });
 
 // GET /inbox/{emailId}
-// @ts-ignore - Ignoring OpenAPI type mismatch for utility functions
+// @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 emailRoutes.openapi(getEmailRoute, async (c) => {
 	const { emailId } = c.req.valid("param");
 	const { result, error } = await db.getEmailById(c.env.D1, emailId);
@@ -67,7 +68,7 @@ emailRoutes.openapi(getEmailRoute, async (c) => {
 });
 
 // DELETE /inbox/{emailId}
-// @ts-ignore - Ignoring OpenAPI type mismatch for utility functions
+// @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 emailRoutes.openapi(deleteEmailRoute, async (c) => {
 	const { emailId } = c.req.valid("param");
 	const { meta, error } = await db.deleteEmailById(c.env.D1, emailId);
@@ -79,7 +80,10 @@ emailRoutes.openapi(deleteEmailRoute, async (c) => {
 
 // GET /domains
 emailRoutes.openapi(getDomainsRoute, async (c) => {
-	c.header("Cache-Control", "public, max-age=3600");
+	// Set cache headers for better performance
+	c.header("Cache-Control", `public, max-age=${CACHE.DOMAINS_TTL}`);
+	c.header("ETag", `"domains-${DOMAINS_SET.size}"`);
+
 	return c.json(OK(Array.from(DOMAINS_SET)));
 });
 

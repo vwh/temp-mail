@@ -1,4 +1,5 @@
 import { convert } from "html-to-text";
+import { HTML_PROCESSING } from "@/config/constants";
 
 /**
  * Safely get the domain from an email address
@@ -9,14 +10,45 @@ export function getDomain(email: string): string {
 }
 
 /**
- * Convert HTML to plain text
+ * Sanitize HTML content by removing potentially dangerous elements
+ */
+function sanitizeHtml(html: string): string {
+	// Basic HTML sanitization - remove script tags and event handlers
+	return html
+		.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+		.replace(/on\w+\s*=\s*["'][^"']*["']/gi, "")
+		.replace(/javascript:/gi, "")
+		.replace(/<iframe\b[^>]*>/gi, "")
+		.replace(/<object\b[^>]*>/gi, "")
+		.replace(/<embed\b[^>]*>/gi, "");
+}
+
+/**
+ * Convert HTML to plain text with size limits and error handling
  */
 function htmlToText(html: string): string | null {
-	const text = convert(html, {
-		wordwrap: 130,
-	});
+	try {
+		// Check size limit before processing
+		if (Buffer.byteLength(html, "utf8") > HTML_PROCESSING.MAX_CONVERSION_SIZE) {
+			console.warn("HTML content too large for conversion, truncating");
+			html = html.substring(0, HTML_PROCESSING.MAX_CONVERSION_SIZE);
+		}
 
-	return text.trim() === "" ? null : text;
+		const text = convert(html, {
+			wordwrap: HTML_PROCESSING.WORDWRAP_LENGTH,
+			selectors: [
+				// Remove potentially dangerous content
+				{ selector: "script", format: "skip" },
+				{ selector: "style", format: "skip" },
+				{ selector: "iframe", format: "skip" },
+			],
+		});
+
+		return text.trim() === "" ? null : text;
+	} catch (error) {
+		console.error("Failed to convert HTML to text:", error);
+		return null;
+	}
 }
 
 /**
@@ -31,7 +63,7 @@ function textToHtmlTemplate(text: string): string | null {
 }
 
 /**
- * Process email content
+ * Process email content with sanitization and size validation
  */
 export function processEmailContent(
 	html: string | null,
@@ -40,18 +72,21 @@ export function processEmailContent(
 	htmlContent: string | null;
 	textContent: string | null;
 } {
-	// Both exist - return as-is
-	if (html && text) {
-		return { htmlContent: html, textContent: text };
+	// Sanitize HTML content if present
+	const sanitizedHtml = html ? sanitizeHtml(html) : null;
+
+	// Both exist - return sanitized HTML and original text
+	if (sanitizedHtml && text) {
+		return { htmlContent: sanitizedHtml, textContent: text };
 	}
 
-	// Only HTML exists - generate text
-	if (html && !text) {
-		return { htmlContent: html, textContent: htmlToText(html) };
+	// Only HTML exists - generate text from sanitized HTML
+	if (sanitizedHtml && !text) {
+		return { htmlContent: sanitizedHtml, textContent: htmlToText(sanitizedHtml) };
 	}
 
-	// Only text exists - generate HTML
-	if (!html && text) {
+	// Only text exists - generate HTML template
+	if (!sanitizedHtml && text) {
 		return { htmlContent: textToHtmlTemplate(text), textContent: text };
 	}
 
