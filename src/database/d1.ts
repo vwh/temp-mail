@@ -1,5 +1,5 @@
-import type { Email, EmailSummary } from "@/schemas/emails/schema";
 import type { Attachment, AttachmentSummary } from "@/schemas/attachments/schema";
+import type { Email, EmailSummary } from "@/schemas/emails/schema";
 
 /**
  * Insert an email into the database

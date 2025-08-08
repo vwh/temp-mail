@@ -1,10 +1,10 @@
 import { createRoute, z } from "@hono/zod-openapi";
-import { attachmentSummarySchema } from "./schema";
 import {
 	domainErrorResponseSchema,
 	notFoundErrorResponseSchema,
 	validationErrorResponseSchema,
 } from "../emails/responseSchemas";
+import { attachmentSummarySchema } from "./schema";
 
 // Attachment-specific response schemas
 const attachmentListResponseSchema = z
