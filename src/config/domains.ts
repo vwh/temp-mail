@@ -34,9 +34,9 @@ export const DOMAINS = [
 		domain: "kuruptd.ink",
 	},
 	{
-		 owner: "oxno1",
-		 domain: "oxno1.space",
-    },
+		owner: "oxno1",
+		domain: "oxno1.space",
+	},
 ] satisfies {
 	owner: string;
 	domain: string;
