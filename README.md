@@ -50,6 +50,7 @@ A big thank you to the individuals who have donated domains to support this proj
 | `wael.fun` | [blockton](https://github.com/blockton) |
 | `tawbah.site` | [HprideH](https://github.com/HprideH) |
 | `kuruptd.ink` | [HprideH](https://github.com/HprideH) |
+| `oxno1.space` | [oxno1](https://github.com/oxno1) |
 
 ### How to Donate a Domain
 
