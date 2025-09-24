@@ -150,16 +150,18 @@ async function processSingleAttachment(
 	}
 
 	const attachmentId = createId();
-	const attachmentSize =
-		attachment.content instanceof ArrayBuffer
-			? attachment.content.byteLength
-			: new TextEncoder().encode(attachment.content || "").byteLength;
 
-	// Convert content to ArrayBuffer if needed
-	const content =
-		attachment.content instanceof ArrayBuffer
-			? attachment.content
-			: (new TextEncoder().encode(attachment.content || "").buffer as ArrayBuffer);
+	let content: ArrayBuffer;
+	let attachmentSize: number;
+
+	if (attachment.content instanceof ArrayBuffer) {
+		content = attachment.content;
+		attachmentSize = content.byteLength;
+	} else {
+		const encodedContent = new TextEncoder().encode(attachment.content || "");
+		content = encodedContent.buffer as ArrayBuffer;
+		attachmentSize = encodedContent.byteLength;
+	}
 
 	// Generate R2 key
 	const r2Key = r2.generateR2Key(emailId, attachmentId, attachment.filename);

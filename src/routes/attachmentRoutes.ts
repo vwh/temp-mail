@@ -21,29 +21,22 @@ attachmentRoutes.openapi(getEmailAttachmentsRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
 	const { limit, offset } = c.req.valid("query");
 
-	// Get all emails for this address first
-	const { results: emails, error: emailError } = await db.getEmailsByRecipient(
+	// Get emails with attachments
+	const { results: allAttachments, error: queryError } = await db.getEmailsWithAttachments(
 		c.env.D1,
 		emailAddress,
 		1000, // Get more emails to find attachments
 		0,
 	);
 
-	if (emailError) return c.json(ERR(emailError.message, "ValidationError"), 400);
+	if (queryError) return c.json(ERR(queryError.message, "ValidationError"), 400);
 
-	// Get attachments for all emails
-	const attachmentPromises = emails
-		.filter((email) => email.has_attachments)
-		.map((email) => db.getAttachmentsByEmailId(c.env.D1, email.id));
-
-	const attachmentResults = await Promise.all(attachmentPromises);
-	const allAttachments = attachmentResults
-		.filter((result) => !result.error)
-		.flatMap((result) => result.results)
+	// Sort by created_at and apply pagination
+	const sortedAttachments = allAttachments
 		.sort((a, b) => b.created_at - a.created_at)
 		.slice(offset, offset + limit);
 
-	return c.json(OK(allAttachments));
+	return c.json(OK(sortedAttachments));
 });
 
 // GET /inbox/{emailId}/attachments

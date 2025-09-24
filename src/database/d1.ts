@@ -267,3 +267,83 @@ export async function updateEmailAttachmentInfo(
 		return { success: false, error: error, meta: undefined };
 	}
 }
+
+/**
+ * Get emails with attachments in a single query
+ */
+export async function getEmailsWithAttachments(
+	db: D1Database,
+	emailAddress: string,
+	limit: number,
+	offset: number,
+) {
+	try {
+		const { results } = await db
+			.prepare(
+				`SELECT
+					e.id, e.from_address, e.to_address, e.subject, e.received_at,
+					e.has_attachments, e.attachment_count,
+					a.id as att_id, a.filename, a.content_type, a.size, a.created_at as att_created_at
+				FROM emails e
+				LEFT JOIN attachments a ON e.id = a.email_id
+				WHERE e.to_address = ?
+				ORDER BY e.received_at DESC, a.created_at ASC
+				LIMIT ? OFFSET ?`,
+			)
+			.bind(emailAddress, limit, offset)
+			.all();
+
+		// Group results by email and combine attachments
+		const emailMap = new Map<string, any>();
+
+		for (const row of results as any[]) {
+			const emailId = row.id;
+
+			if (!emailMap.has(emailId)) {
+				emailMap.set(emailId, {
+					id: emailId,
+					from_address: row.from_address,
+					to_address: row.to_address,
+					subject: row.subject,
+					received_at: row.received_at,
+					has_attachments: Boolean(row.has_attachments),
+					attachment_count: row.attachment_count,
+					attachments: []
+				});
+			}
+
+			const email = emailMap.get(emailId);
+
+			// Add attachment if it exists
+			if (row.att_id) {
+				email.attachments.push({
+					id: row.att_id,
+					filename: row.filename,
+					content_type: row.content_type,
+					size: row.size,
+					created_at: row.att_created_at
+				});
+			}
+		}
+
+		// Convert back to array and flatten attachments
+		const emailsWithAttachments = Array.from(emailMap.values());
+		const allAttachments = emailsWithAttachments.flatMap(email =>
+			email.attachments.map((att: any) => ({
+				...att,
+				email_id: email.id,
+				email_subject: email.subject,
+				email_received_at: email.received_at
+			}))
+		);
+
+		return {
+			results: allAttachments as AttachmentSummary[],
+			emails: emailsWithAttachments,
+			error: undefined
+		};
+	} catch (e: unknown) {
+		const error = e instanceof Error ? e : new Error(String(e));
+		return { results: [], emails: [], error: error };
+	}
+}

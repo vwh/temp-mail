@@ -28,10 +28,13 @@ function sanitizeHtml(html: string): string {
  */
 function htmlToText(html: string): string | null {
 	try {
-		// Check size limit before processing
-		if (new TextEncoder().encode(html).byteLength > HTML_PROCESSING.MAX_CONVERSION_SIZE) {
+		// Check size limit and truncate if needed
+		const encodedHtml = new TextEncoder().encode(html);
+		if (encodedHtml.byteLength > HTML_PROCESSING.MAX_CONVERSION_SIZE) {
 			console.warn("HTML content too large for conversion, truncating");
-			html = html.substring(0, HTML_PROCESSING.MAX_CONVERSION_SIZE);
+			// Calculate truncate position based on character estimate (UTF-8)
+			const truncateRatio = HTML_PROCESSING.MAX_CONVERSION_SIZE / encodedHtml.byteLength;
+			html = html.substring(0, Math.floor(html.length * truncateRatio));
 		}
 
 		const text = convert(html, {

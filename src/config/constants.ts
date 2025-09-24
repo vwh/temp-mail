@@ -49,6 +49,7 @@ export const KV_LIMITS = {
 	MAX_SENDER_KEYS: 1000,
 	BATCH_SIZE: 50,
 	LIST_BATCH_SIZE: 100,
+	CACHE_TTL: 300000, // 5 minutes in milliseconds
 } as const;
 
 // Cache constants
