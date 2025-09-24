@@ -2,7 +2,6 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 import { CACHE } from "@/config/constants";
 import { DOMAINS_SET } from "@/config/domains";
 import * as db from "@/database/d1";
-import validateDomain from "@/middlewares/validateDomain";
 import {
 	deleteEmailRoute,
 	deleteEmailsRoute,
@@ -12,12 +11,11 @@ import {
 	getEmailsRoute,
 } from "@/schemas/emails/routeDefinitions";
 import { ERR, OK } from "@/utils/http";
+import { validateEmailDomain } from "@/utils/validation";
 
 const emailRoutes = new OpenAPIHono<{ Bindings: CloudflareBindings }>();
 
 // --- Middlewares ---
-emailRoutes.use("/emails/:emailAddress", validateDomain);
-emailRoutes.use("/emails/count/:emailAddress", validateDomain);
 
 // --- Routes ---
 // GET /emails/{emailAddress}
@@ -26,9 +24,14 @@ emailRoutes.openapi(getEmailsRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
 	const { limit, offset } = c.req.valid("query");
 
+	// Validate domain after Zod validation
+	const domainValidation = validateEmailDomain(emailAddress);
+	if (!domainValidation.valid) return c.json(domainValidation.error, 404);
+
 	const { results, error } = await db.getEmailsByRecipient(c.env.D1, emailAddress, limit, offset);
 
 	if (error) return c.json(ERR(error.message, "D1Error"), 500);
+
 	return c.json(OK(results));
 });
 
@@ -36,6 +39,10 @@ emailRoutes.openapi(getEmailsRoute, async (c) => {
 // @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 emailRoutes.openapi(getEmailsCountRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
+
+	// Validate domain after Zod validation
+	const domainValidation = validateEmailDomain(emailAddress);
+	if (!domainValidation.valid) return c.json(domainValidation.error, 404);
 
 	const { count, error } = await db.countEmailsByRecipient(c.env.D1, emailAddress);
 
@@ -47,6 +54,10 @@ emailRoutes.openapi(getEmailsCountRoute, async (c) => {
 // @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 emailRoutes.openapi(deleteEmailsRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
+
+	// Validate domain after Zod validation
+	const domainValidation = validateEmailDomain(emailAddress);
+	if (!domainValidation.valid) return c.json(domainValidation.error, 404);
 
 	const { meta, error } = await db.deleteEmailsByRecipient(c.env.D1, emailAddress);
 

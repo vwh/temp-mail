@@ -1,7 +1,6 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import * as db from "@/database/d1";
 import * as r2 from "@/database/r2";
-import validateDomain from "@/middlewares/validateDomain";
 import {
 	deleteAttachmentRoute,
 	getAttachmentRoute,
@@ -9,17 +8,20 @@ import {
 	getEmailAttachmentsRoute,
 } from "@/schemas/attachments/routeDefinitions";
 import { ERR, OK } from "@/utils/http";
+import { validateEmailDomain } from "@/utils/validation";
 
 const attachmentRoutes = new OpenAPIHono<{ Bindings: CloudflareBindings }>();
 
-// Apply domain validation middleware to email-specific routes
-attachmentRoutes.use("/emails/:emailAddress/attachments", validateDomain);
 
 // GET /emails/{emailAddress}/attachments
 // @ts-ignore - OpenAPI strict typing doesn't allow flexible error responses, but runtime behavior is correct
 attachmentRoutes.openapi(getEmailAttachmentsRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
 	const { limit, offset } = c.req.valid("query");
+
+	// Validate domain after Zod validation
+	const domainValidation = validateEmailDomain(emailAddress);
+	if (!domainValidation.valid) return c.json(domainValidation.error, 404);
 
 	// Get emails with attachments
 	const { results: allAttachments, error: queryError } = await db.getEmailsWithAttachments(
