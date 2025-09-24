@@ -51,6 +51,9 @@ A big thank you to the individuals who have donated domains to support this proj
 | `tawbah.site` | [HprideH](https://github.com/HprideH) |
 | `kuruptd.ink` | [HprideH](https://github.com/HprideH) |
 | `oxno1.space` | [oxno1](https://github.com/oxno1) |
+| `hacktivc.com` | None |
+| `lealaom.xyz` | None |
+| `leala.site` | None |
 
 ### How to Donate a Domain
 

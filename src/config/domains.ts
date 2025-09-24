@@ -37,6 +37,18 @@ export const DOMAINS = [
 		owner: "oxno1",
 		domain: "oxno1.space",
 	},
+	{
+		owner: "None",
+		domain: "hacktivc.com",
+	},
+	{
+		owner: "None",
+		domain: "lealaom.xyz",
+	},
+	{
+		owner: "None",
+		domain: "leala.site",
+	},
 ] satisfies {
 	owner: string;
 	domain: string;
