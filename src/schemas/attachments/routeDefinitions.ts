@@ -3,8 +3,8 @@ import {
 	domainErrorResponseSchema,
 	notFoundErrorResponseSchema,
 	validationErrorResponseSchema,
-} from "../emails/responseSchemas";
-import { attachmentSummarySchema } from "./schema";
+} from "../emails";
+import { attachmentSummarySchema } from "./index";
 
 // Attachment-specific response schemas
 const attachmentListResponseSchema = z

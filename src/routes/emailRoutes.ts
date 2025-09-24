@@ -1,7 +1,14 @@
+// External imports
 import { OpenAPIHono } from "@hono/zod-openapi";
+
+// Configuration imports
 import { CACHE } from "@/config/constants";
 import { DOMAINS_SET } from "@/config/domains";
-import * as db from "@/database/d1";
+
+// Database imports
+import { createDatabaseService } from "@/database";
+
+// Schema imports
 import {
 	deleteEmailRoute,
 	deleteEmailsRoute,
@@ -10,56 +17,51 @@ import {
 	getEmailsCountRoute,
 	getEmailsRoute,
 } from "@/schemas/emails/routeDefinitions";
+
+// Utility imports
 import { ERR, OK } from "@/utils/http";
 import { validateEmailDomain } from "@/utils/validation";
 
 const emailRoutes = new OpenAPIHono<{ Bindings: CloudflareBindings }>();
 
-// --- Middlewares ---
-
-// --- Routes ---
-// GET /emails/{emailAddress}
 // @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 emailRoutes.openapi(getEmailsRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
 	const { limit, offset } = c.req.valid("query");
 
-	// Validate domain after Zod validation
 	const domainValidation = validateEmailDomain(emailAddress);
 	if (!domainValidation.valid) return c.json(domainValidation.error, 404);
 
-	const { results, error } = await db.getEmailsByRecipient(c.env.D1, emailAddress, limit, offset);
+	const dbService = createDatabaseService(c.env.D1);
+	const { results, error } = await dbService.getEmailsByRecipient(emailAddress, limit, offset);
 
 	if (error) return c.json(ERR(error.message, "D1Error"), 500);
-
 	return c.json(OK(results));
 });
 
-// GET /emails/count/{emailAddress}
 // @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 emailRoutes.openapi(getEmailsCountRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
 
-	// Validate domain after Zod validation
 	const domainValidation = validateEmailDomain(emailAddress);
 	if (!domainValidation.valid) return c.json(domainValidation.error, 404);
 
-	const { count, error } = await db.countEmailsByRecipient(c.env.D1, emailAddress);
+	const dbService = createDatabaseService(c.env.D1);
+	const { count, error } = await dbService.countEmailsByRecipient(emailAddress);
 
 	if (error) return c.json(ERR(error.message, "D1Error"), 500);
 	return c.json(OK({ count }));
 });
 
-// DELETE /emails/{emailAddress}
 // @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 emailRoutes.openapi(deleteEmailsRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
 
-	// Validate domain after Zod validation
 	const domainValidation = validateEmailDomain(emailAddress);
 	if (!domainValidation.valid) return c.json(domainValidation.error, 404);
 
-	const { meta, error } = await db.deleteEmailsByRecipient(c.env.D1, emailAddress);
+	const dbService = createDatabaseService(c.env.D1);
+	const { meta, error } = await dbService.deleteEmailsByRecipient(emailAddress);
 
 	if (error) return c.json(ERR(error.message, "D1Error"), 500);
 	if (meta && meta.changes === 0)
@@ -67,34 +69,31 @@ emailRoutes.openapi(deleteEmailsRoute, async (c) => {
 	return c.json(OK({ message: "Emails deleted successfully", deleted_count: meta?.changes }));
 });
 
-// GET /inbox/{emailId}
 // @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 emailRoutes.openapi(getEmailRoute, async (c) => {
 	const { emailId } = c.req.valid("param");
-	const { result, error } = await db.getEmailById(c.env.D1, emailId);
+	const dbService = createDatabaseService(c.env.D1);
+	const { result, error } = await dbService.getEmailById(emailId);
 
 	if (error) return c.json(ERR(error.message, "D1Error"), 500);
 	if (!result) return c.json(ERR("Email not found", "NotFound"), 404);
 	return c.json(OK(result));
 });
 
-// DELETE /inbox/{emailId}
 // @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 emailRoutes.openapi(deleteEmailRoute, async (c) => {
 	const { emailId } = c.req.valid("param");
-	const { meta, error } = await db.deleteEmailById(c.env.D1, emailId);
+	const dbService = createDatabaseService(c.env.D1);
+	const { meta, error } = await dbService.deleteEmailById(emailId);
 
 	if (error) return c.json(ERR(error.message, "D1Error"), 500);
 	if (meta && meta.changes === 0) return c.json(ERR("Email not found", "NotFound"), 404);
 	return c.json(OK({ message: "Email deleted successfully" }));
 });
 
-// GET /domains
 emailRoutes.openapi(getDomainsRoute, async (c) => {
-	// Set cache headers for better performance
 	c.header("Cache-Control", `public, max-age=${CACHE.DOMAINS_TTL}`);
 	c.header("ETag", `"domains-${DOMAINS_SET.size}"`);
-
 	return c.json(OK(Array.from(DOMAINS_SET)));
 });
 

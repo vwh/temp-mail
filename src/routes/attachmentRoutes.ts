@@ -1,20 +1,25 @@
+// External imports
 import { OpenAPIHono } from "@hono/zod-openapi";
-import * as db from "@/database/d1";
+
+// Database imports
+import { createDatabaseService } from "@/database";
 import * as r2 from "@/database/r2";
+
+// Schema imports
 import {
 	deleteAttachmentRoute,
 	getAttachmentRoute,
 	getAttachmentsRoute,
 	getEmailAttachmentsRoute,
 } from "@/schemas/attachments/routeDefinitions";
+
+// Utility imports
 import { ERR, OK } from "@/utils/http";
 import { validateEmailDomain } from "@/utils/validation";
 
 const attachmentRoutes = new OpenAPIHono<{ Bindings: CloudflareBindings }>();
 
-
-// GET /emails/{emailAddress}/attachments
-// @ts-ignore - OpenAPI strict typing doesn't allow flexible error responses, but runtime behavior is correct
+// @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 attachmentRoutes.openapi(getEmailAttachmentsRoute, async (c) => {
 	const { emailAddress } = c.req.valid("param");
 	const { limit, offset } = c.req.valid("query");
@@ -24,8 +29,8 @@ attachmentRoutes.openapi(getEmailAttachmentsRoute, async (c) => {
 	if (!domainValidation.valid) return c.json(domainValidation.error, 404);
 
 	// Get emails with attachments
-	const { results: allAttachments, error: queryError } = await db.getEmailsWithAttachments(
-		c.env.D1,
+	const dbService = createDatabaseService(c.env.D1);
+	const { results: allAttachments, error: queryError } = await dbService.getEmailsWithAttachments(
 		emailAddress,
 		1000, // Get more emails to find attachments
 		0,
@@ -41,30 +46,30 @@ attachmentRoutes.openapi(getEmailAttachmentsRoute, async (c) => {
 	return c.json(OK(sortedAttachments));
 });
 
-// GET /inbox/{emailId}/attachments
-// @ts-ignore - OpenAPI strict typing doesn't allow flexible error responses, but runtime behavior is correct
+// @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 attachmentRoutes.openapi(getAttachmentsRoute, async (c) => {
 	const { emailId } = c.req.valid("param");
 
 	// Check if email exists
-	const { result: email, error: emailError } = await db.getEmailById(c.env.D1, emailId);
+	const dbService = createDatabaseService(c.env.D1);
+	const { result: email, error: emailError } = await dbService.getEmailById(emailId);
 	if (emailError) return c.json(ERR(emailError.message, "ValidationError"), 400);
 	if (!email) return c.json(ERR("Email not found", "NotFound"), 404);
 
 	// Get attachments for this email
-	const { results, error } = await db.getAttachmentsByEmailId(c.env.D1, emailId);
+	const { results, error } = await dbService.getAttachmentsByEmailId(emailId);
 	if (error) return c.json(ERR(error.message, "ValidationError"), 400);
 
 	return c.json(OK(results));
 });
 
-// GET /attachments/{attachmentId}
-// @ts-ignore - OpenAPI strict typing doesn't allow flexible error responses, but runtime behavior is correct
+// @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 attachmentRoutes.openapi(getAttachmentRoute, async (c) => {
 	const { attachmentId } = c.req.valid("param");
 
 	// Get attachment metadata from database
-	const { result: attachment, error: dbError } = await db.getAttachmentById(c.env.D1, attachmentId);
+	const dbService = createDatabaseService(c.env.D1);
+	const { result: attachment, error: dbError } = await dbService.getAttachmentById(attachmentId);
 	if (dbError) return c.json(ERR(dbError.message, "ValidationError"), 400);
 	if (!attachment) return c.json(ERR("Attachment not found", "NotFound"), 404);
 
@@ -82,13 +87,13 @@ attachmentRoutes.openapi(getAttachmentRoute, async (c) => {
 	return c.body(data.body);
 });
 
-// DELETE /attachments/{attachmentId}
-// @ts-ignore - OpenAPI strict typing doesn't allow flexible error responses, but runtime behavior is correct
+// @ts-ignore - OpenAPI route handler type mismatch with error response status codes
 attachmentRoutes.openapi(deleteAttachmentRoute, async (c) => {
 	const { attachmentId } = c.req.valid("param");
 
 	// Get attachment metadata from database
-	const { result: attachment, error: dbError } = await db.getAttachmentById(c.env.D1, attachmentId);
+	const dbService = createDatabaseService(c.env.D1);
+	const { result: attachment, error: dbError } = await dbService.getAttachmentById(attachmentId);
 	if (dbError) return c.json(ERR(dbError.message, "ValidationError"), 400);
 	if (!attachment) return c.json(ERR("Attachment not found", "NotFound"), 404);
 
@@ -103,10 +108,8 @@ attachmentRoutes.openapi(deleteAttachmentRoute, async (c) => {
 	}
 
 	// Delete from database
-	const { success: dbSuccess, error: dbDeleteError } = await db.deleteAttachmentById(
-		c.env.D1,
-		attachmentId,
-	);
+	const { success: dbSuccess, error: dbDeleteError } =
+		await dbService.deleteAttachmentById(attachmentId);
 	if (!dbSuccess)
 		return c.json(
 			ERR(dbDeleteError?.message || "Failed to delete attachment", "ValidationError"),
@@ -114,12 +117,10 @@ attachmentRoutes.openapi(deleteAttachmentRoute, async (c) => {
 		);
 
 	// Update email attachment count
-	const { results: remainingAttachments } = await db.getAttachmentsByEmailId(
-		c.env.D1,
+	const { results: remainingAttachments } = await dbService.getAttachmentsByEmailId(
 		attachment.email_id,
 	);
-	await db.updateEmailAttachmentInfo(
-		c.env.D1,
+	await dbService.updateEmailAttachmentInfo(
 		attachment.email_id,
 		remainingAttachments.length > 0,
 		remainingAttachments.length,

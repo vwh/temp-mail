@@ -30,7 +30,10 @@ export async function updateSenderStats(kv: KVNamespace, senderAddress: string) 
 export async function getTopSenders(kv: KVNamespace, limit = 10) {
 	try {
 		const cacheKey = "top_senders_cache";
-		const cachedData = await kv.get(cacheKey, "json") as { timestamp: number; data: any[] } | null;
+		const cachedData = (await kv.get(cacheKey, "json")) as {
+			timestamp: number;
+			data: any[];
+		} | null;
 
 		// Return cached data if available and fresh
 		if (cachedData && cachedData.timestamp > Date.now() - KV_LIMITS.CACHE_TTL) {
@@ -86,10 +89,13 @@ export async function getTopSenders(kv: KVNamespace, limit = 10) {
 		const result = allSenders.sort((a, b) => b.count - a.count).slice(0, limit);
 
 		// Cache the result
-		await kv.put(cacheKey, JSON.stringify({
-			timestamp: Date.now(),
-			data: result
-		}));
+		await kv.put(
+			cacheKey,
+			JSON.stringify({
+				timestamp: Date.now(),
+				data: result,
+			}),
+		);
 
 		return result;
 	} catch (error) {

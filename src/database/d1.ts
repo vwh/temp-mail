@@ -1,5 +1,5 @@
-import type { Attachment, AttachmentSummary } from "@/schemas/attachments/schema";
-import type { Email, EmailSummary } from "@/schemas/emails/schema";
+import type { Attachment, AttachmentSummary } from "@/schemas/attachments";
+import type { Email, EmailSummary } from "@/schemas/emails";
 
 /**
  * Insert an email into the database
@@ -308,7 +308,7 @@ export async function getEmailsWithAttachments(
 					received_at: row.received_at,
 					has_attachments: Boolean(row.has_attachments),
 					attachment_count: row.attachment_count,
-					attachments: []
+					attachments: [],
 				});
 			}
 
@@ -321,26 +321,26 @@ export async function getEmailsWithAttachments(
 					filename: row.filename,
 					content_type: row.content_type,
 					size: row.size,
-					created_at: row.att_created_at
+					created_at: row.att_created_at,
 				});
 			}
 		}
 
 		// Convert back to array and flatten attachments
 		const emailsWithAttachments = Array.from(emailMap.values());
-		const allAttachments = emailsWithAttachments.flatMap(email =>
+		const allAttachments = emailsWithAttachments.flatMap((email) =>
 			email.attachments.map((att: any) => ({
 				...att,
 				email_id: email.id,
 				email_subject: email.subject,
-				email_received_at: email.received_at
-			}))
+				email_received_at: email.received_at,
+			})),
 		);
 
 		return {
 			results: allAttachments as AttachmentSummary[],
 			emails: emailsWithAttachments,
-			error: undefined
+			error: undefined,
 		};
 	} catch (e: unknown) {
 		const error = e instanceof Error ? e : new Error(String(e));

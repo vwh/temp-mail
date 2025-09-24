@@ -9,8 +9,10 @@ import {
 	emailsDeleteSuccessResponseSchema,
 	notFoundErrorResponseSchema,
 	validationErrorResponseSchema,
-} from "./responseSchemas";
-import { emailAddressParamSchema, emailIdParamSchema, emailQuerySchema } from "./routerSchema";
+	emailAddressParamSchema,
+	emailIdParamSchema,
+	emailQuerySchema,
+} from "./index";
 
 // Get emails route
 export const getEmailsRoute = createRoute({

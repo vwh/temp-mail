@@ -4,7 +4,7 @@ import { ATTACHMENT_LIMITS } from "@/config/constants";
 import * as db from "@/database/d1";
 import { updateSenderStats } from "@/database/kv";
 import * as r2 from "@/database/r2";
-import { emailSchema } from "@/schemas/emails/schema";
+import { emailSchema } from "@/schemas/emails";
 import { now } from "@/utils/helpers";
 import { processEmailContent } from "@/utils/mail";
 import { PerformanceTimer } from "@/utils/performance";
