@@ -1,6 +1,6 @@
 import { DOMAINS_SET } from "@/config/domains";
-import { getDomain } from "@/utils/mail";
 import { ERR } from "@/utils/http";
+import { getDomain } from "@/utils/mail";
 
 /**
  * Validate email domain after Zod validation

@@ -1,5 +1,4 @@
 import * as db from "@/database/d1";
-import * as kv from "@/database/kv";
 import { now } from "@/utils/helpers";
 import { logInfo } from "@/utils/logger";
 import { sendMessage } from "@/utils/telegram";
@@ -23,22 +22,4 @@ export async function handleScheduled(
 	} else {
 		throw new Error(`Email cleanup failed: ${error}`);
 	}
-}
-
-/**
- * Cloudflare Scheduled Function
- * Send daily top senders report
- */
-export async function handleDailyReport(
-	_event: ScheduledEvent,
-	env: CloudflareBindings,
-	ctx: ExecutionContext,
-) {
-	const topSenders = await kv.getTopSenders(env.KV, 10);
-
-	const message = `*Top 10 Senders*\n\n${topSenders
-		.map(({ name, count }) => `*${name}*: ${count}`)
-		.join("\n")}`;
-
-	ctx.waitUntil(sendMessage(message, env));
 }

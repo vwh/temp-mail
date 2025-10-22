@@ -2,16 +2,16 @@ import { createRoute } from "@hono/zod-openapi";
 import {
 	domainErrorResponseSchema,
 	domainsSuccessResponseSchema,
+	emailAddressParamSchema,
 	emailDeleteSuccessResponseSchema,
 	emailDetailSuccessResponseSchema,
+	emailIdParamSchema,
 	emailListSuccessResponseSchema,
+	emailQuerySchema,
 	emailsCountSuccessResponseSchema,
 	emailsDeleteSuccessResponseSchema,
 	notFoundErrorResponseSchema,
 	validationErrorResponseSchema,
-	emailAddressParamSchema,
-	emailIdParamSchema,
-	emailQuerySchema,
 } from "./index";
 
 // Get emails route

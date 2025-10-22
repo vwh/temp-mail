@@ -2,7 +2,6 @@ import { createId } from "@paralleldrive/cuid2";
 import PostalMime from "postal-mime";
 import { ATTACHMENT_LIMITS } from "@/config/constants";
 import * as db from "@/database/d1";
-import { updateSenderStats } from "@/database/kv";
 import * as r2 from "@/database/r2";
 import { emailSchema } from "@/schemas/emails";
 import { now } from "@/utils/helpers";
@@ -108,13 +107,6 @@ export async function handleEmail(
 			has_attachments: validAttachments.length > 0,
 			attachment_count: validAttachments.length,
 		});
-
-		// Update sender stats
-		ctx.waitUntil(
-			updateSenderStats(env.KV, message.from).catch((error) => {
-				console.error("Failed to update sender stats:", error);
-			}),
-		);
 
 		// Insert email
 		const { success, error } = await db.insertEmail(env.D1, emailData);

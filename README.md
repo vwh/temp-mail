@@ -16,7 +16,6 @@ AI-made web client: [https://web.barid.site](https://web.barid.site)
     *   [Project Setup](#project-setup)
     *   [Cloudflare Configuration](#cloudflare-configuration)
         *   [D1 Database Setup](#d1-database-setup)
-        *   [KV Namespace Setup](#kv-namespace-setup)
         *   [R2 Bucket Setup](#r2-bucket-setup)
         *   [Email Routing Setup](#email-routing-setup)
 *   [Running the Worker](#running-the-worker)
@@ -38,7 +37,7 @@ AI-made web client: [https://web.barid.site](https://web.barid.site)
 
 ## Supporters
 
-A big thank you to the individuals who have donated domains to support this project. Your contributions help keep this service running.
+A big thank you to individuals who have donated domains to support this project. Your contributions help keep this service running.
 
 | Domain | Donated by |
 | --- | --- |
@@ -59,8 +58,8 @@ A big thank you to the individuals who have donated domains to support this proj
 
 If you have an unused domain and would like to contribute, you can donate it by following these steps:
 
-1.  **Create a Pull Request**: Add your domain and owner information to the `config/domains.ts` file in the `src` directory.
-2.  **Nameserver Provisioning**: After your pull request, we will provide you with the nameservers to update for your domain.
+1.  **Create a Pull Request**: Add your domain and owner information to `config/domains.ts` file in `src` directory.
+2.  **Nameserver Provisioning**: After your pull request, we will provide you with nameservers to update for your domain.
 
 ---
 
@@ -79,14 +78,14 @@ Here are some projects built by the community using or integrating with Temp Mai
 
 ### Prerequisites
 
-Before you begin, ensure you have the following:
+Before you begin, ensure you have following:
 
 *   **Bun**: Installed on your system.
 *   **Cloudflare Account**: With access to Workers, Email Routing, and D1.
 
 ### Project Setup
 
-1.  **Install Dependencies**: Install the necessary JavaScript dependencies.
+1.  **Install Dependencies**: Install necessary JavaScript dependencies.
     ```bash
     bun install
     ```
@@ -100,12 +99,12 @@ Before you begin, ensure you have the following:
 
 #### D1 Database Setup
 
-1.  **Create the D1 database**:
+1.  **Create** D1 database**:
     ```bash
     bun run db:create
     ```
-2.  **Copy the `database_id`**: From the output of the above command.
-3.  **Update `wrangler.jsonc`**: Open `wrangler.jsonc` and replace `database_id` with the `database_id` you just copied.
+2.  **Copy** `database_id`: From output of above command.
+3.  **Update** `wrangler.jsonc`: Open `wrangler.jsonc` and replace `database_id` with `database_id` you just copied.
 4.  **Apply Database Schema**:
     ```bash
     bun run db:tables
@@ -115,18 +114,9 @@ Before you begin, ensure you have the following:
     bun run db:indexes
     ```
 
-#### KV Namespace Setup
-
-1.  **Create the KV Namespace**:
-    ```bash
-    bun run kv:create
-    ```
-2.  **Copy the `id`**: From the output of the above command.
-3.  **Update `wrangler.jsonc`**: Open `wrangler.jsonc` and replace `id` and `preview_id` with the `id` you just copied.
-
 #### R2 Bucket Setup
 
-1.  **Create the R2 Bucket**:
+1.  **Create** R2 Bucket**:
     ```bash
     bun run r2:create
     ```
@@ -149,9 +139,9 @@ Before you begin, ensure you have the following:
 
 ### Cloudflare Information Script (Optional)
 
-To check your Cloudflare Workers, D1 databases, KV namespaces, and domain information directly from your terminal, you can use the `cf-info` script.
+To check your Cloudflare Workers, D1 databases, and domain information directly from your terminal, you can use the `cf-info` script.
 
-1.  **Configure API Credentials**: Add your Cloudflare Account ID and an API Token with appropriate permissions (e.g., `Zone:Read`, `Worker Scripts:Read`, `D1:Read`, `KV Storage:Read`, `Zone:Email:Read`) to your `.dev.vars` file.
+1.  **Configure API Credentials**: Add your Cloudflare Account ID and an API Token with appropriate permissions (e.g., `Zone:Read`, `Worker Scripts:Read`, `D1:Read`, `Zone:Email:Read`) to your `.dev.vars` file.
 
     Example `.dev.vars` additions:
     ```
@@ -159,7 +149,7 @@ To check your Cloudflare Workers, D1 databases, KV namespaces, and domain inform
     CLOUDFLARE_API_TOKEN="YOUR_CLOUDFLARE_API_TOKEN"
     ```
 
-2.  **Run the Script**:
+2.  **Run** Script**:
     ```bash
     bun run cf-info
     ```
@@ -168,7 +158,7 @@ To check your Cloudflare Workers, D1 databases, KV namespaces, and domain inform
 
 If you wish to enable Telegram logging for your worker, follow these steps:
 
-1.  **Enable Logging in `wrangler.jsonc`**: Ensure `TELEGRAM_LOG_ENABLE` is set to `true` in your `wrangler.jsonc` file under the `vars` section.
+1.  **Enable Logging in `wrangler.jsonc`**: Ensure `TELEGRAM_LOG_ENABLE` is set to `true` in your `wrangler.jsonc` file under `vars` section.
 
 2.  **Local Development (`.dev.vars`)**: For local development, create a `.dev.vars` file in your project root with your Telegram bot token and chat ID. This file is used by `bun dev`.
 
@@ -180,7 +170,7 @@ If you wish to enable Telegram logging for your worker, follow these steps:
 
 3.  **Production Deployment (Secrets)**: For production, you must set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` as secrets using `wrangler`. This securely stores your sensitive information with Cloudflare.
 
-    Run the following commands in your terminal and enter the respective values when prompted:
+    Run following commands in your terminal and enter respective values when prompted:
     ```bash
     bun wrangler secret put TELEGRAM_BOT_TOKEN
     bun wrangler secret put TELEGRAM_CHAT_ID
@@ -188,7 +178,7 @@ If you wish to enable Telegram logging for your worker, follow these steps:
 
 ### Local Development
 
-To run the worker locally:
+To run worker locally:
 
 ```bash
 bun run dev
@@ -216,7 +206,6 @@ bun run deploy
 - `bun run db:migrate-attachments` - Add attachment support to existing database
 
 ### Storage Setup
-- `bun run kv:create` - Create KV namespace
 - `bun run r2:create` - Create R2 bucket for attachments
 - `bun run r2:create-preview` - Create R2 preview bucket
 

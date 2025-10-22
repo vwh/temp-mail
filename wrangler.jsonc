@@ -17,13 +17,6 @@
 			"database_id": "7a8d8ce6-df0e-4c56-8a7a-e3f5895a4771" // Replace with the ID from `bun run db:create`
 		}
 	],
-	"kv_namespaces": [
-		{
-			"binding": "KV",
-			"id": "73f6b6ffe8e94b5db08ed815d92b44e6", // Replace with the ID from `bun run kv:create`
-			"preview_id": "73f6b6ffe8e94b5db08ed815d92b44e6" // Replace with the ID from `bun run kv:create`
-		}
-	],
 	"r2_buckets": [
 		{
 			"binding": "R2",

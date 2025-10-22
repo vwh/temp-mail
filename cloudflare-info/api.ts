@@ -19,10 +19,6 @@ export interface D1Database {
     created_at: string;
 }
 
-export interface KVNamespace {
-    id: string;
-    title: string;
-}
 
 export interface Zone {
     id: string;

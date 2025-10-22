@@ -35,7 +35,6 @@ This repository is a **Cloudflare Workers-based temporary email service** that p
 
 ### Cloudflare Services
 - **D1 Database**: SQLite database for email storage
-- **KV Storage**: Key-value store for caching and rate limiting
 - **R2 Storage**: Object storage for email attachments (up to 50MB)
 - **Email Routing**: Email receiving service
 - **Scheduled Functions**: Automated cleanup and reporting
@@ -51,7 +50,6 @@ src/
 │   └── domains.ts             # Supported email domains configuration
 ├── database/                  # Database interaction modules
 │   ├── d1.ts                  # D1 database operations
-│   ├── kv.ts                  # KV storage operations
 │   └── r2.ts                  # R2 storage operations
 ├── handlers/                  # Event handlers
 │   ├── emailHandler.ts        # Email processing handler
@@ -96,7 +94,6 @@ cloudflare-info/               # Cloudflare information utility
 - `bun run db:indexes` - Apply database indexes
 
 ### Storage Setup
-- `bun run kv:create` - Create KV namespace
 - `bun run r2:create` - Create R2 bucket for attachments
 - `bun run r2:create-preview` - Create R2 preview bucket
 
@@ -149,7 +146,7 @@ cloudflare-info/               # Cloudflare information utility
 ### Cloudflare-Native
 - **Edge Computing**: Runs on Cloudflare's edge network
 - **Serverless**: No server management required
-- **Multi-Service Integration**: Uses D1, KV, R2, Email Routing, and Scheduled Functions
+- **Multi-Service Integration**: Uses D1, R2, Email Routing, and Scheduled Functions
 
 ### Configuration Management
 - **Environment-Based**: Different configs for dev/preview/production
@@ -177,7 +174,6 @@ bun run db:tables
 bun run db:indexes
 
 # Set up storage
-bun run kv:create
 bun run r2:create
 bun run r2:create-preview
 
@@ -198,7 +194,6 @@ bun run deploy
 
 ### Cloudflare Bindings
 - **D1**: Database binding for email storage
-- **KV**: Key-value storage for caching
 - **R2**: Object storage for attachments
 - **Scheduled**: Cron job triggers for cleanup
 
