@@ -43,7 +43,14 @@ export class DatabaseService {
 				)
 				.bind(emailAddress, limit, offset)
 				.all();
-			return { results: results as EmailSummary[], error };
+
+			// Convert integer boolean values to actual booleans
+			const processedResults = (results as any[]).map(email => ({
+				...email,
+				has_attachments: Boolean(email.has_attachments)
+			}));
+
+			return { results: processedResults as EmailSummary[], error };
 		} catch (e: unknown) {
 			const error = e instanceof Error ? e : new Error(String(e));
 			return { results: [], error };
@@ -56,7 +63,17 @@ export class DatabaseService {
 				.prepare(`SELECT * FROM emails WHERE id = ?`)
 				.bind(emailId)
 				.all();
-			return { result: results[0] as Email | undefined, error };
+
+			if (results[0]) {
+				// Convert integer boolean values to actual booleans
+				const email = {
+					...results[0],
+					has_attachments: Boolean(results[0].has_attachments)
+				};
+				return { result: email as Email, error };
+			}
+
+			return { result: undefined, error };
 		} catch (e: unknown) {
 			const error = e instanceof Error ? e : new Error(String(e));
 			return { result: undefined, error };
