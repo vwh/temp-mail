@@ -45,9 +45,9 @@ export class DatabaseService {
 				.all();
 
 			// Convert integer boolean values to actual booleans
-			const processedResults = (results as any[]).map(email => ({
+			const processedResults = (results as any[]).map((email) => ({
 				...email,
-				has_attachments: Boolean(email.has_attachments)
+				has_attachments: Boolean(email.has_attachments),
 			}));
 
 			return { results: processedResults as EmailSummary[], error };
@@ -68,7 +68,7 @@ export class DatabaseService {
 				// Convert integer boolean values to actual booleans
 				const email = {
 					...results[0],
-					has_attachments: Boolean(results[0].has_attachments)
+					has_attachments: Boolean(results[0].has_attachments),
 				};
 				return { result: email as Email, error };
 			}
