@@ -13,7 +13,7 @@ export default {
 	// Cloudflare Scheduled Functions
 	scheduled: (event: ScheduledEvent, env: CloudflareBindings, ctx: ExecutionContext) => {
 		switch (event.cron) {
-			case "0 * * * *":
+			case "0 */4 * * *":
 				return handleScheduled(event, env, ctx);
 		}
 	},
