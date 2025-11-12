@@ -25,7 +25,7 @@
 		}
 	],
 	"triggers": {
-		"crons": ["0 */4 * * *"]
+		"crons": ["0 */2 * * *"]
 	},
 	"vars": {
 		"TELEGRAM_LOG_ENABLE": true,

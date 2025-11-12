@@ -18,8 +18,10 @@ export async function handleScheduled(
 
 	if (success) {
 		logInfo("Email cleanup completed successfully.");
-		ctx.waitUntil(sendMessage("Email cleanup completed successfully.", env));
+		ctx.waitUntil(sendMessage("✅ Email cleanup completed successfully.", env));
 	} else {
-		throw new Error(`Email cleanup failed: ${error}`);
+		const errorMessage = `❌ Email cleanup failed: ${error?.message || 'Unknown error'}`;
+		ctx.waitUntil(sendMessage(errorMessage, env));
+		throw new Error(errorMessage);
 	}
 }
