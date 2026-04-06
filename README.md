@@ -2,9 +2,9 @@
 
 Cloudflare Worker that acts as a temporary email inbox.
 
-**API documentation:** [https://api.barid.site](https://api.barid.site)
+**API documentation:** [https://api.driftz.site](https://api.driftz.site)
 
-AI-made web client: [https://web.barid.site](https://web.barid.site)
+AI-made web client: [https://web.driftz.site](https://web.driftz.site)
 
 ## Table of Contents
 
